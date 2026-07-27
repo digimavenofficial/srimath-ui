@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { BRAND_NAME } from "@/constants";
 import MobileMenu from "./MobileMenu";
+import Image from "next/image";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -42,7 +43,13 @@ export default function Header() {
                 isScrolled ? "text-[#8b1e23]" : "text-white"
               }`}
             >
-              {BRAND_NAME}
+              {/* <img src="/public/images/srimath-logo.png" alt="srimath-logo" /> */}
+              <Image
+                src="/images/srimath-logo.png"
+                alt="srimath-logo"
+                width={100}
+                height={50}
+              />
             </Link>
 
             {/* Desktop Navigation - Right Side */}
