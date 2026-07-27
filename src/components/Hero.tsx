@@ -12,15 +12,12 @@ export default function Hero() {
         className="absolute inset-0 w-full h-full object-cover"
         poster="https://images.unsplash.com/photo-1604813614405-92fc801d440d?w=1920&h=1080&fit=crop"
       >
-        <source
-          src="https://commondatastorage.googleapis.com/gtv-videos-library/sample/ForBiggerBlazes.mp4"
-          type="video/mp4"
-        />
+        <source src="/videos/hero_video.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+      <div className="absolute inset-0 bg-black/60"></div>
 
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
