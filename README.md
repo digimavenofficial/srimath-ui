@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SRIMATH Builders - Premium Real Estate Website
 
-## Getting Started
+A production-ready, premium builder/real estate website for SRIMATH Builders, Chennai. Built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
 
-First, run the development server:
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the website.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Create optimized production build
+npm run build
 
-## Learn More
+# Start production server
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🎨 Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- ✅ Full-screen hero video with overlay
+- ✅ Responsive navigation with mobile drawer menu
+- ✅ Project slider/carousel with pagination
+- ✅ Animated statistics counter
+- ✅ Video showcase with custom controls
+- ✅ Testimonials carousel
+- ✅ Floating WhatsApp and scroll-to-top buttons
+- ✅ Smooth scroll animations
+- ✅ Mobile-first responsive design
+- ✅ SEO optimized with metadata
+- ✅ Accessibility features (ARIA, keyboard nav)
+- ✅ TypeScript throughout
+- ✅ Performance optimized
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📱 Responsive Design
 
-## Deploy on Vercel
+- **Mobile**: 320px - 767px
+- **Tablet**: 768px - 1023px
+- **Desktop**: 1024px - 1439px
+- **Large Desktop**: 1440px+
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🎯 Customization
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [CUSTOMIZATION_GUIDE.md](./CUSTOMIZATION_GUIDE.md) for:
+
+- Brand information
+- Projects and testimonials
+- Colors and styling
+- Metadata and SEO
+- Contact information
+- Social links
+
+## 📂 Project Structure
+
+```
+src/
+├── app/              # Next.js app router
+├── components/       # React components
+├── constants/        # App configuration
+└── types/           # TypeScript interfaces
+```
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16.2.12
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS 4
+- **UI Library**: React 19.2.4
+- **Runtime**: Node.js 18+
+
+## 🎨 Brand Colors
+
+```
+Primary: #8b1e23 (Deep Red/Maroon)
+Dark: #000000
+Light: #ffffff
+Gray: #f5f5f5
+```
+
+## 📊 Performance
+
+- Optimized image loading
+- Lazy loading for off-screen content
+- Code splitting
+- Minified production builds
+- Tailwind CSS purging
+
+## ♿ Accessibility
+
+- Semantic HTML
+- ARIA labels
+- Keyboard navigation
+- Focus management
+- Color contrast compliance
+- Respects prefers-reduced-motion
+
+## 📈 SEO
+
+- Page title and description
+- Open Graph meta tags
+- Semantic HTML structure
+- Mobile-friendly design
+- Fast loading times
+
+## 🚀 Deployment
+
+Ready to deploy on:
+
+- **Vercel** (recommended)
+- **Netlify**
+- **AWS Amplify**
+- **Any Node.js hosting**
+
+See [CUSTOMIZATION_GUIDE.md](./CUSTOMIZATION_GUIDE.md#deployment) for deployment instructions.
+
+## 📝 License
+
+Custom website for SRIMATH Builders.
+
+## 🤝 Support
+
+For customizations or issues, refer to [CUSTOMIZATION_GUIDE.md](./CUSTOMIZATION_GUIDE.md) or contact the development team.
+
+---
+
+**Built with ❤️ | Version 1.0.0**
