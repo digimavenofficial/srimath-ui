@@ -17,29 +17,31 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
   {
     label: "About Us",
-    href: "#about",
+    href: "/#about",
     children: [
-      { label: "Our Story", href: "#" },
-      { label: "Leadership", href: "#" },
+      { label: "Our Story", href: "/#about" },
+      { label: "Leadership", href: "/#about" },
     ],
   },
   {
     label: "Projects",
-    href: "#projects",
+    href: "/#projects",
     children: [
-      { label: "Ongoing", href: "#" },
-      { label: "Completed", href: "#" },
-      { label: "Upcoming", href: "#" },
+      { label: "Ongoing", href: "/#projects" },
+      { label: "Completed", href: "/#projects" },
+      { label: "Upcoming", href: "/#projects" },
     ],
   },
   {
     label: "Services",
-    href: "#services",
+    href: "/#services",
     children: [
-      { label: "Residential", href: "#" },
-      { label: "Commercial", href: "#" },
+      { label: "Residential", href: "/#services" },
+      { label: "Commercial", href: "/#services" },
     ],
   },
+  { label: "Blog", href: "/blog" },
+  { label: "Login", href: "/login" },
   { label: "Contact Us", href: "#contact" },
 ];
 
@@ -173,11 +175,11 @@ export const TESTIMONIALS: Testimonial[] = [
 
 // Quick Links
 export const QUICK_LINKS = [
-  { label: "Home", href: "#" },
-  { label: "About Us", href: "#" },
-  { label: "Projects", href: "#" },
-  { label: "Services", href: "#" },
-  { label: "Contact", href: "#" },
+  { label: "Home", href: "/" },
+  { label: "Blog", href: "/blog" },
+  { label: "Login", href: "/login" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 // Project Links

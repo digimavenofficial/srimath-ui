@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { NAV_LINKS } from "@/constants";
 
 interface MobileMenuProps {
@@ -9,7 +10,7 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
-  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -23,11 +24,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   }, [isOpen]);
 
   const toggleExpand = (label: string) => {
-    setExpandedItems((prev) =>
-      prev.includes(label)
-        ? prev.filter((item) => item !== label)
-        : [...prev, label],
-    );
+    setExpandedItem((current) => (current === label ? null : label));
   };
 
   return (
@@ -39,7 +36,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         }`}
         onClick={onClose}
         aria-hidden="true"
-      ></div>
+      />
 
       {/* Drawer */}
       <nav
@@ -60,30 +57,39 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div className="pt-20 px-6 pb-6">
           {NAV_LINKS.map((link) => (
             <div key={link.label}>
-              <button
-                onClick={() => link.children && toggleExpand(link.label)}
-                className="w-full text-left py-4 text-lg font-semibold text-gray-900 border-b border-gray-100 flex justify-between items-center hover:text-[#F69F11] transition-colors"
-              >
-                {link.label}
-                {link.children && (
+              {link.children ? (
+                <button
+                  onClick={() => toggleExpand(link.label)}
+                  className="w-full text-left py-4 text-lg font-semibold text-gray-900 border-b border-gray-100 flex justify-between items-center hover:text-[#F69F11] transition-colors"
+                  aria-expanded={expandedItem === link.label}
+                >
+                  {link.label}
                   <span className="text-xl">
-                    {expandedItems.includes(link.label) ? "−" : "+"}
+                    {expandedItem === link.label ? "−" : "+"}
                   </span>
-                )}
-              </button>
+                </button>
+              ) : (
+                <Link
+                  href={link.href}
+                  onClick={onClose}
+                  className="block py-4 text-lg font-semibold text-gray-900 border-b border-gray-100 hover:text-[#F69F11] transition-colors"
+                >
+                  {link.label}
+                </Link>
+              )}
 
               {/* Submenu */}
-              {link.children && expandedItems.includes(link.label) && (
+              {link.children && expandedItem === link.label && (
                 <div className="bg-gray-50 max-h-40 overflow-hidden transition-all duration-300">
                   {link.children.map((child) => (
-                    <a
+                    <Link
                       key={child.label}
                       href={child.href}
                       onClick={onClose}
                       className="block py-3 px-4 text-gray-700 text-sm hover:text-[#F69F11] hover:pl-6 transition-all"
                     >
                       {child.label}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}

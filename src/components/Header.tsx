@@ -2,17 +2,43 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { BRAND_NAME } from "@/constants";
 import MobileMenu from "./MobileMenu";
 import Image from "next/image";
+import { createSupabaseBrowserClient } from "@/lib/supabase";
 
-export default function Header() {
+interface HeaderProps {
+  variant?: "public" | "admin";
+}
+
+export default function Header({ variant = "public" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+  const router = useRouter();
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50);
   }, []);
+
+  const handlePrimaryAction = async () => {
+    if (variant === "admin") {
+      setIsSigningOut(true);
+      const supabase = createSupabaseBrowserClient();
+
+      if (supabase) {
+        await supabase.auth.signOut();
+      }
+
+      router.replace("/login");
+      router.refresh();
+      return;
+    }
+
+    const element = document.getElementById("projects");
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -43,29 +69,28 @@ export default function Header() {
                 isScrolled ? "text-[#F69F11]" : "text-white"
               }`}
             >
-              {/* <img src="/public/images/srimath-logo.png" alt="srimath-logo" /> */}
               <Image
                 src="/images/srimath-logo.png"
                 alt="srimath-logo"
                 width={100}
                 height={50}
+                className="h-auto w-auto"
+                priority
               />
             </Link>
 
             {/* Desktop Navigation - Right Side */}
             <div className="hidden md:flex items-center gap-6">
               <button
-                onClick={() => {
-                  const element = document.getElementById("projects");
-                  element?.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={handlePrimaryAction}
                 className={`px-6 py-2 rounded-lg font-semibold transition-all ${
                   isScrolled
                     ? "bg-[#F69F11] text-dark hover:bg-amber-400"
                     : "bg-[#F69F11] text-dark hover:bg-amber-400"
                 }`}
+                disabled={variant === "admin" && isSigningOut}
               >
-                ENQUIRY NOW
+                {variant === "admin" ? "SIGN OUT" : "ENQUIRY NOW"}
               </button>
 
               {/* Hamburger Menu Icon */}
@@ -86,13 +111,11 @@ export default function Header() {
             {/* Mobile - Right Side */}
             <div className="md:hidden flex items-center gap-4">
               <button
-                onClick={() => {
-                  const element = document.getElementById("projects");
-                  element?.scrollIntoView({ behavior: "smooth" });
-                }}
+                onClick={handlePrimaryAction}
                 className="px-4 py-2 rounded-lg font-semibold bg-[#F69F11] text-dark text-sm"
+                disabled={variant === "admin" && isSigningOut}
               >
-                ENQUIRY NOW
+                {variant === "admin" ? "SIGN OUT" : "ENQUIRY NOW"}
               </button>
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
