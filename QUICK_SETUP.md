@@ -118,7 +118,7 @@ Edit **`src/app/globals.css`** to change brand colors:
 
 ```css
 :root {
-  --color-primary: #8b1e23; /* Change this */
+  --color-primary: #f69f11; /* Change this */
   --color-dark: #000000;
   --color-light: #ffffff;
   --color-gray: #f5f5f5;
@@ -213,7 +213,7 @@ npm start
 
 ### Change Primary Color
 
-Edit `src/app/globals.css` - change `--color-primary: #8b1e23;`
+Edit `src/app/globals.css` - change `--color-primary: #F69F11;`
 
 ### Add More Project Cards
 

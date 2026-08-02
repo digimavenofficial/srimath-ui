@@ -25,7 +25,7 @@ export default function WhyChooseUs() {
               className="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 text-center"
             >
               {/* Icon */}
-              <div className="text-5xl mb-4 text-[#8b1e23] font-bold">
+              <div className="text-5xl mb-4 text-[#F69F11] font-bold">
                 {feature.icon}
               </div>
 

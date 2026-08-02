@@ -10,7 +10,7 @@ export default function ProjectsIntroSection() {
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-8 leading-tight">
               OUR COMMITMENT,
               <br />
-              <span className="text-[#8b1e23]">REFLECTED IN EVERY PROJECT</span>
+              <span className="text-[#F69F11]">REFLECTED IN EVERY PROJECT</span>
             </h2>
 
             <p className="text-lg text-gray-200 mb-8 leading-relaxed">
@@ -22,7 +22,7 @@ export default function ProjectsIntroSection() {
 
             <div className="space-y-4">
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#8b1e23] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-8 h-8 bg-[#F69F11] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-white font-bold">✓</span>
                 </div>
                 <div>
@@ -36,7 +36,7 @@ export default function ProjectsIntroSection() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#8b1e23] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-8 h-8 bg-[#F69F11] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-white font-bold">✓</span>
                 </div>
                 <div>
@@ -48,7 +48,7 @@ export default function ProjectsIntroSection() {
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#8b1e23] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                <div className="w-8 h-8 bg-[#F69F11] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-white font-bold">✓</span>
                 </div>
                 <div>
@@ -67,7 +67,7 @@ export default function ProjectsIntroSection() {
                 const element = document.getElementById("projects");
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="inline-flex items-center gap-2 px-8 py-4 bg-[#8b1e23] text-white font-bold rounded-lg hover:bg-red-900 transition-all transform hover:scale-105 mt-8"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105 mt-8"
             >
               VIEW ALL PROJECTS
               <span>→</span>
@@ -87,15 +87,15 @@ export default function ProjectsIntroSection() {
         {/* Additional Text */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-gray-700 pt-12">
           <div className="text-center">
-            <h3 className="text-[#8b1e23] text-4xl font-bold mb-2">20+</h3>
+            <h3 className="text-[#F69F11] text-4xl font-bold mb-2">20+</h3>
             <p className="text-gray-300">Years of Experience</p>
           </div>
           <div className="text-center">
-            <h3 className="text-[#8b1e23] text-4xl font-bold mb-2">500+</h3>
+            <h3 className="text-[#F69F11] text-4xl font-bold mb-2">500+</h3>
             <p className="text-gray-300">Satisfied Customers</p>
           </div>
           <div className="text-center">
-            <h3 className="text-[#8b1e23] text-4xl font-bold mb-2">100%</h3>
+            <h3 className="text-[#F69F11] text-4xl font-bold mb-2">100%</h3>
             <p className="text-gray-300">Commitment to Quality</p>
           </div>
         </div>

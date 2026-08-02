@@ -45,7 +45,7 @@ export default function VideoShowcase() {
             className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 hover:bg-opacity-50 transition-all duration-300 group-hover:bg-opacity-50"
             aria-label={isPlaying ? "Pause video" : "Play video"}
           >
-            <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center bg-[#8b1e23] rounded-full transform transition-all duration-300 hover:scale-110">
+            <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center bg-[#F69F11] rounded-full transform transition-all duration-300 hover:scale-110">
               {isPlaying ? (
                 // Pause Icon
                 <svg

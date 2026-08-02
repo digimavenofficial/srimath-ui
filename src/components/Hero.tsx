@@ -22,8 +22,8 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
         {/* Tag */}
-        <div className="inline-block mb-6 px-6 py-3 bg-[#8b1e23] rounded-full">
-          <p className="text-sm font-semibold tracking-wide">
+        <div className="inline-block mb-6 px-6 py-3 bg-[#F69F11] rounded-full">
+          <p className="text-sm font-semibold tracking-wide text-black uppercase">
             BEST BUILDER IN CHENNAI
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function Hero() {
             const element = document.getElementById("projects");
             element?.scrollIntoView({ behavior: "smooth" });
           }}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-[#8b1e23] text-white font-bold rounded-lg hover:bg-red-900 transition-all transform hover:scale-105"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-[#F69F11] text-black font-semibold rounded-lg hover:bg-yellow-400 transition-all transform hover:scale-105"
         >
           EXPLORE OUR PROJECTS
           <span className="transition-transform group-hover:translate-x-1">

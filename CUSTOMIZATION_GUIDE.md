@@ -114,7 +114,7 @@ The brand colors are defined in `src/app/globals.css`:
 
 ```css
 :root {
-  --color-primary: #8b1e23; /* Deep red/maroon */
+  --color-primary: #f69f11; /* Deep red/maroon */
   --color-dark: #000000;
   --color-light: #ffffff;
   --color-gray: #f5f5f5;
@@ -153,7 +153,7 @@ Edit `src/constants/index.ts` to update:
 ## Color Palette
 
 ```
-Primary Red/Maroon: #8b1e23
+Primary Red/Maroon: #F69F11
 Dark: #000000
 Light: #ffffff
 Gray: #f5f5f5

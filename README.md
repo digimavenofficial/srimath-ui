@@ -85,7 +85,7 @@ src/
 ## 🎨 Brand Colors
 
 ```
-Primary: #8b1e23 (Deep Red/Maroon)
+Primary: #F69F11 (Deep Red/Maroon)
 Dark: #000000
 Light: #ffffff
 Gray: #f5f5f5

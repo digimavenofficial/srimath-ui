@@ -66,7 +66,7 @@ export default function Testimonials() {
               {/* Stars */}
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <span key={i} className="text-[#8b1e23] text-2xl">
+                  <span key={i} className="text-[#F69F11] text-2xl">
                     ★
                   </span>
                 ))}
@@ -74,7 +74,7 @@ export default function Testimonials() {
 
               {/* Quote Icon */}
               <svg
-                className="w-8 h-8 text-[#8b1e23] mb-4"
+                className="w-8 h-8 text-[#F69F11] mb-4"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -94,7 +94,7 @@ export default function Testimonials() {
                     {testimonial.designation}
                   </p>
                 )}
-                <p className="text-[#8b1e23] text-sm font-semibold mt-1">
+                <p className="text-[#F69F11] text-sm font-semibold mt-1">
                   {testimonial.projectName}
                 </p>
               </div>
@@ -107,7 +107,7 @@ export default function Testimonials() {
           {/* Previous Button */}
           <button
             onClick={prevTestimonial}
-            className="p-3 rounded-full border-2 border-[#8b1e23] text-[#8b1e23] hover:bg-[#8b1e23] hover:text-white transition-all"
+            className="p-3 rounded-full border-2 border-[#F69F11] text-[#F69F11] hover:bg-[#F69F11] hover:text-white transition-all"
             aria-label="Previous testimonial"
           >
             <svg
@@ -132,7 +132,7 @@ export default function Testimonials() {
                 key={i}
                 onClick={() => setCurrentIndex(i)}
                 className={`w-3 h-3 rounded-full transition-all ${
-                  i === currentIndex ? "bg-[#8b1e23] w-8" : "bg-gray-500"
+                  i === currentIndex ? "bg-[#F69F11] w-8" : "bg-gray-500"
                 }`}
                 aria-label={`Go to testimonial ${i + 1}`}
               />
@@ -142,7 +142,7 @@ export default function Testimonials() {
           {/* Next Button */}
           <button
             onClick={nextTestimonial}
-            className="p-3 rounded-full border-2 border-[#8b1e23] text-[#8b1e23] hover:bg-[#8b1e23] hover:text-white transition-all"
+            className="p-3 rounded-full border-2 border-[#F69F11] text-[#F69F11] hover:bg-[#F69F11] hover:text-white transition-all"
             aria-label="Next testimonial"
           >
             <svg

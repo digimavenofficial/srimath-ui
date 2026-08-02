@@ -42,9 +42,9 @@ function StatCounter({ value, label }: { value: string; label: string }) {
   return (
     <div
       ref={ref}
-      className="text-center p-6 sm:p-8 rounded-lg bg-gray-50 hover:bg-[#8b1e23] hover:text-white transition-all duration-300"
+      className="text-center p-6 sm:p-8 rounded-lg bg-gray-50 hover:bg-[#F69F11] hover:text-white transition-all duration-300"
     >
-      <div className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2 text-[#8b1e23] hover:text-white transition-colors">
+      <div className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-2 text-[#F69F11] hover:text-white transition-colors">
         {displayValue}
       </div>
       <p className="text-gray-600 hover:text-white/90 transition-colors font-semibold">

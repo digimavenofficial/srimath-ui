@@ -197,7 +197,7 @@ srimath-ui/
 ## 🎨 Brand Colors
 
 ```css
-Primary (Brand Red): #8b1e23
+Primary (Brand Red): #F69F11
 Dark: #000000
 Light: #ffffff
 Gray: #f5f5f5

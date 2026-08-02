@@ -87,7 +87,7 @@ export const PROJECTS: Project[] = [
     subtitle: "Premium Apartments",
     location: "OMR, Chennai",
     image:
-      "https://images.unsplash.com/photo-1604813614405-92fc801d440d?w=800&h=600&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
     status: "READY TO MOVE",
     category: "Premium Homes",
     description:

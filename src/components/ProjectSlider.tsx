@@ -66,7 +66,7 @@ export default function ProjectSlider() {
           {/* Previous Button */}
           <button
             onClick={prevSlide}
-            className="p-3 rounded-full border-2 border-[#8b1e23] text-[#8b1e23] hover:bg-[#8b1e23] hover:text-white transition-all"
+            className="p-3 rounded-full border-2 border-[#F69F11] text-[#F69F11] hover:bg-[#F69F11] hover:text-white transition-all"
             aria-label="Previous projects"
           >
             <svg
@@ -91,7 +91,7 @@ export default function ProjectSlider() {
                 key={i}
                 onClick={() => setCurrentIndex(i)}
                 className={`w-3 h-3 rounded-full transition-all ${
-                  i === currentIndex ? "bg-[#8b1e23] w-8" : "bg-gray-300"
+                  i === currentIndex ? "bg-[#F69F11] w-8" : "bg-gray-300"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />
@@ -107,7 +107,7 @@ export default function ProjectSlider() {
           {/* Next Button */}
           <button
             onClick={nextSlide}
-            className="p-3 rounded-full border-2 border-[#8b1e23] text-[#8b1e23] hover:bg-[#8b1e23] hover:text-white transition-all"
+            className="p-3 rounded-full border-2 border-[#F69F11] text-[#F69F11] hover:bg-[#F69F11] hover:text-white transition-all"
             aria-label="Next projects"
           >
             <svg
@@ -130,7 +130,7 @@ export default function ProjectSlider() {
         <div className="text-center mt-12">
           <a
             href="#"
-            className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#8b1e23] text-[#8b1e23] font-bold rounded-lg hover:bg-[#8b1e23] hover:text-white transition-all transform hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#F69F11] text-[#F69F11] font-bold rounded-lg hover:bg-[#F69F11] hover:text-white transition-all transform hover:scale-105"
           >
             VIEW ALL PROJECTS
             <span>→</span>

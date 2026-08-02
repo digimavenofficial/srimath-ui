@@ -49,7 +49,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full bg-[#8b1e23] text-white flex items-center justify-center hover:bg-red-900 transition-all transform hover:scale-110"
+                  className="w-10 h-10 rounded-full bg-[#F69F11] text-white flex items-center justify-center hover:bg-amber-400 transition-all transform hover:scale-110"
                   aria-label={social.label}
                 >
                   {getSocialIcon(social.icon)}
@@ -66,7 +66,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="hover:text-[#8b1e23] transition-colors"
+                    className="hover:text-[#F69F11] transition-colors"
                   >
                     {link.label}
                   </a>
@@ -83,7 +83,7 @@ export default function Footer() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="hover:text-[#8b1e23] transition-colors"
+                    className="hover:text-[#F69F11] transition-colors"
                   >
                     {link.label}
                   </a>
@@ -104,7 +104,7 @@ export default function Footer() {
                 <p className="text-sm text-gray-400 mb-1">PHONE</p>
                 <a
                   href={`tel:${COMPANY_PHONE}`}
-                  className="text-[#8b1e23] hover:text-red-500"
+                  className="text-[#F69F11] hover:text-amber-500"
                 >
                   {COMPANY_PHONE}
                 </a>
@@ -113,7 +113,7 @@ export default function Footer() {
                 <p className="text-sm text-gray-400 mb-1">EMAIL</p>
                 <a
                   href={`mailto:${COMPANY_EMAIL}`}
-                  className="text-[#8b1e23] hover:text-red-500"
+                  className="text-[#F69F11] hover:text-amber-500"
                 >
                   {COMPANY_EMAIL}
                 </a>
@@ -133,13 +133,13 @@ export default function Footer() {
           <div className="flex gap-6 md:justify-end flex-wrap">
             <a
               href="#"
-              className="text-gray-400 hover:text-[#8b1e23] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#F69F11] text-sm transition-colors"
             >
               Privacy Policy
             </a>
             <a
               href="#"
-              className="text-gray-400 hover:text-[#8b1e23] text-sm transition-colors"
+              className="text-gray-400 hover:text-[#F69F11] text-sm transition-colors"
             >
               Terms & Conditions
             </a>

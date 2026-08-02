@@ -62,7 +62,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
             <div key={link.label}>
               <button
                 onClick={() => link.children && toggleExpand(link.label)}
-                className="w-full text-left py-4 text-lg font-semibold text-gray-900 border-b border-gray-100 flex justify-between items-center hover:text-[#8b1e23] transition-colors"
+                className="w-full text-left py-4 text-lg font-semibold text-gray-900 border-b border-gray-100 flex justify-between items-center hover:text-[#F69F11] transition-colors"
               >
                 {link.label}
                 {link.children && (
@@ -80,7 +80,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                       key={child.label}
                       href={child.href}
                       onClick={onClose}
-                      className="block py-3 px-4 text-gray-700 text-sm hover:text-[#8b1e23] hover:pl-6 transition-all"
+                      className="block py-3 px-4 text-gray-700 text-sm hover:text-[#F69F11] hover:pl-6 transition-all"
                     >
                       {child.label}
                     </a>

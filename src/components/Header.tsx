@@ -40,7 +40,7 @@ export default function Header() {
             <Link
               href="/"
               className={`text-2xl font-bold transition-colors ${
-                isScrolled ? "text-[#8b1e23]" : "text-white"
+                isScrolled ? "text-[#F69F11]" : "text-white"
               }`}
             >
               {/* <img src="/public/images/srimath-logo.png" alt="srimath-logo" /> */}
@@ -61,18 +61,18 @@ export default function Header() {
                 }}
                 className={`px-6 py-2 rounded-lg font-semibold transition-all ${
                   isScrolled
-                    ? "bg-[#8b1e23] text-white hover:bg-red-900"
-                    : "bg-[#8b1e23] text-white hover:bg-red-900"
+                    ? "bg-[#F69F11] text-dark hover:bg-amber-400"
+                    : "bg-[#F69F11] text-dark hover:bg-amber-400"
                 }`}
               >
-                ENTER
+                ENQUIRY NOW
               </button>
 
               {/* Hamburger Menu Icon */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={`w-8 h-8 flex flex-col justify-center items-center gap-1.5 transition-colors ${
-                  isScrolled ? "text-[#8b1e23]" : "text-white"
+                  isScrolled ? "text-[#F69F11]" : "text-white"
                 }`}
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}
@@ -90,14 +90,14 @@ export default function Header() {
                   const element = document.getElementById("projects");
                   element?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="px-4 py-2 rounded-lg font-semibold bg-[#8b1e23] text-white text-sm"
+                className="px-4 py-2 rounded-lg font-semibold bg-[#F69F11] text-dark text-sm"
               >
-                ENTER
+                ENQUIRY NOW
               </button>
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={`w-8 h-8 flex flex-col justify-center items-center gap-1.5 transition-colors ${
-                  isScrolled ? "text-[#8b1e23]" : "text-white"
+                  isScrolled ? "text-[#F69F11]" : "text-white"
                 }`}
                 aria-label="Toggle menu"
                 aria-expanded={isMobileMenuOpen}

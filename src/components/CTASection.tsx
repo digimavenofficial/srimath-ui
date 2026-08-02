@@ -39,14 +39,14 @@ export default function CTASection() {
                 const element = document.getElementById("projects");
                 element?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#8b1e23] text-white font-bold rounded-lg hover:bg-red-900 transition-all transform hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105"
             >
               EXPLORE PROJECTS
               <span>→</span>
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#8b1e23] font-bold rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#F69F11] font-bold rounded-lg hover:bg-gray-100 transition-all transform hover:scale-105"
             >
               CONTACT US
               <span>→</span>
@@ -56,19 +56,19 @@ export default function CTASection() {
           {/* Stats */}
           <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-8 border-t border-gray-600 pt-12">
             <div>
-              <p className="text-3xl font-bold text-[#8b1e23]">100+</p>
+              <p className="text-3xl font-bold text-[#F69F11]">100+</p>
               <p className="text-gray-300 text-sm">Projects</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-[#8b1e23]">600+</p>
+              <p className="text-3xl font-bold text-[#F69F11]">600+</p>
               <p className="text-gray-300 text-sm">Happy Families</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-[#8b1e23]">20+</p>
+              <p className="text-3xl font-bold text-[#F69F11]">20+</p>
               <p className="text-gray-300 text-sm">Years</p>
             </div>
             <div>
-              <p className="text-3xl font-bold text-[#8b1e23]">100%</p>
+              <p className="text-3xl font-bold text-[#F69F11]">100%</p>
               <p className="text-gray-300 text-sm">Quality</p>
             </div>
           </div>

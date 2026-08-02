@@ -9,7 +9,7 @@ export default function PartnershipSection() {
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-8">
             MORE THAN CONSTRUCTION,
             <br />
-            <span className="text-white bg-[#8b1e23] px-4 py-2 rounded-full inline-block mt-4">
+            <span className="text-white bg-[#F69F11] px-8 py-6 rounded-full inline-block mt-4">
               IT IS A PARTNERSHIP.
             </span>
           </h2>
@@ -28,7 +28,7 @@ export default function PartnershipSection() {
         <div className="text-center">
           <a
             href="#"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#8b1e23] text-white font-bold rounded-lg hover:bg-red-900 transition-all transform hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105"
           >
             ABOUT US
             <span>→</span>
@@ -38,7 +38,7 @@ export default function PartnershipSection() {
         {/* Values Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-xl font-bold text-[#8b1e23] mb-3">
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3">
               Our Commitment
             </h3>
             <p className="text-gray-600">
@@ -47,7 +47,7 @@ export default function PartnershipSection() {
             </p>
           </div>
           <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-xl font-bold text-[#8b1e23] mb-3">
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3">
               Your Trust
             </h3>
             <p className="text-gray-600">
