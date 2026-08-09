@@ -55,7 +55,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         )}
 
         {/* Buttons */}
-        <div className="flex gap-4 flex-col sm:flex-row">
+        {/* <div className="flex gap-4 flex-col sm:flex-row">
           <a
           href="/projects"
           className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105"
@@ -65,7 +65,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         <button className="flex-1 px-6 py-3 border-2 border-[#F69F11] text-[#F69F11] font-bold rounded-lg hover:bg-[#F69F11] hover:text-white transition-all transform hover:scale-105">
           MORE DETAILS →
         </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

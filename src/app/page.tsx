@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   Header,
   Hero,
@@ -13,8 +14,13 @@ import {
   WhatsAppButton,
   ScrollToTop,
 } from "@/components";
+import { createSupabaseServerClient } from "@/lib/supabase.server";
+import { getAllProjects } from "@/services/project.service";
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createSupabaseServerClient();
+  const projects = supabase ? await getAllProjects(supabase) : [];
+
   return (
     <main className="w-full">
       {/* Header/Navigation */}
@@ -36,7 +42,7 @@ export default function Home() {
       <ProjectsIntroSection />
 
       {/* Projects Slider */}
-      <ProjectSlider />
+      <ProjectSlider projects={projects} />
 
       {/* Why Choose Us */}
       <WhyChooseUs />

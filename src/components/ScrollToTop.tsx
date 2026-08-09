@@ -30,22 +30,12 @@ export default function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-24 sm:bottom-8 right-8 z-30 p-3 bg-[#F69F11] text-white rounded-full shadow-lg hover:shadow-2xl hover:bg-amber-400 transition-all transform hover:scale-110 active:scale-95"
+          className="mb-15 fixed bottom-24 sm:bottom-8 right-8 z-30 p-3 bg-[#F69F11] text-white rounded-full shadow-lg hover:shadow-2xl hover:bg-amber-400 transition-all transform hover:scale-110 active:scale-95"
           aria-label="Scroll to top"
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M7 16V4m0 0L3 8m0 0h4l-4 4m10 4v4m0 0l4-4m0 0h-4l4-4"
-            />
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+</svg>
         </button>
       )}
     </>

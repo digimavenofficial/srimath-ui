@@ -30,10 +30,10 @@ export default function VideoShowcase() {
           <video
             ref={videoRef}
             className="w-full h-full object-cover"
-            poster="https://images.unsplash.com/photo-1512080248-a52364e2dba1?w=1920&h=1080&fit=crop"
+            poster="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4vRtLYH8KwoiXId-KXd8QOsHVi57Da59UhqOwtWF5bg&s=10"
           >
             <source
-              src="https://commondatastorage.googleapis.com/gtv-videos-library/sample/ElephantsDream.mp4"
+              src="https://www.youtube.com/watch?v=mIeJGrJfv48"
               type="video/mp4"
             />
             Your browser does not support the video tag.

@@ -42,7 +42,7 @@ export default function ProjectGrid({ initialProjects }: ProjectGridProps) {
   );
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-10 mt-20">
       <div className="rounded-[2rem] border border-gray-200 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.06)] sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>

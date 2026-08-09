@@ -2,9 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { PROJECTS } from "@/constants";
+import type { Project } from "@/types";
 import ProjectCard from "./ProjectCard";
 
-export default function ProjectSlider() {
+interface ProjectSliderProps {
+  projects?: Project[];
+}
+
+export default function ProjectSlider({ projects = PROJECTS }: ProjectSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [projectsPerView, setProjectsPerView] = useState(2);
 

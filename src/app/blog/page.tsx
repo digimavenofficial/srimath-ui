@@ -10,7 +10,7 @@ export default async function BlogPage() {
   return (
     <SiteShell>
       <section className="px-4 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl space-y-10">
+        <div className="mx-auto max-w-7xl space-y-10 mt-20">
           <div className="max-w-3xl">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#F69F11]">
               Blog
