@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BRAND_NAME } from "@/constants";
 import MobileMenu from "./MobileMenu";
+import EnquiryModal from "./EnquiryModal";
 import Image from "next/image";
 import { createSupabaseBrowserClient } from "@/lib/supabase";
 
@@ -15,6 +16,7 @@ interface HeaderProps {
 export default function Header({ variant = "public" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const router = useRouter();
 
@@ -36,8 +38,7 @@ export default function Header({ variant = "public" }: HeaderProps) {
       return;
     }
 
-    const element = document.getElementById("projects");
-    element?.scrollIntoView({ behavior: "smooth" });
+    setIsEnquiryOpen(true);
   };
 
   useEffect(() => {
@@ -139,6 +140,8 @@ export default function Header({ variant = "public" }: HeaderProps) {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
       />
+
+      <EnquiryModal isOpen={isEnquiryOpen} onClose={() => setIsEnquiryOpen(false)} />
     </>
   );
 }

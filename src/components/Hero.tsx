@@ -20,9 +20,9 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/60"></div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white mt-45">
         {/* Tag */}
-        <div className="inline-block mb-6 px-6 py-3 bg-[#F69F11] rounded-full">
+        <div className="inline-block mb-6 px-4 py-2 bg-[#F69F11] rounded-full">
           <p className="text-sm font-semibold tracking-wide text-black uppercase">
             BEST BUILDER IN CHENNAI
           </p>
@@ -36,14 +36,13 @@ export default function Hero() {
         </h1>
 
         {/* Subheading */}
-        <p className="text-lg sm:text-xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg sm:text-xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed mb-10">
           At SRIMATH Builders, we're committed to delivering premium residential
-          and commercial spaces that redefine modern living in Chennai. Quality,
-          trust, and excellence define every project.
+          and commercial spaces that redefine modern living in Chennai.
         </p>
 
         {/* CTA Button */}
-        <a
+        {/* <a
           href="#projects"
           onClick={(e) => {
             e.preventDefault();
@@ -56,11 +55,11 @@ export default function Hero() {
           <span className="transition-transform group-hover:translate-x-1">
             →
           </span>
-        </a>
+        </a> */}
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
         <svg
           className="w-6 h-6 text-white"
           fill="none"

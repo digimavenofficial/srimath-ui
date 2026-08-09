@@ -17,6 +17,13 @@ const config = {
         mono: ["var(--font-geist-mono)"],
       },
     },
+    screens: {
+      xs: '375px', // custom breakpoint
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+    },
   },
   plugins: [],
 };

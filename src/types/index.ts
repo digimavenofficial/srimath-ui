@@ -3,14 +3,31 @@
  */
 
 export interface Project {
-  id: string;
-  title: string;
-  subtitle: string;
+  id: number;
+  name?: string;
+  title?: string;
+  subtitle?: string;
   location: string;
-  image: string;
-  status: string;
-  category: string;
+  image?: string;
+  status?: string;
+  category?: string;
+  variant?: string;
+  size?: string;
+  starts_from?: string;
   description?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ProjectFormValues {
+  name: string;
+  location: string;
+  size: string;
+  category: string;
+  variant: string;
+  image: string;
+  startsFrom: string;
+  status: string;
 }
 
 export interface Testimonial {

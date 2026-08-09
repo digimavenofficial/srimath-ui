@@ -18,14 +18,14 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
 
-        {/* Status Badge */}
+        {/* Status / Variant Badge */}
         <div className="absolute top-4 left-4 bg-[#F69F11] text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold">
-          {project.status}
+          {project.variant ?? project.status ?? "Project"}
         </div>
 
         {/* Category Badge */}
         <div className="absolute top-4 right-4 bg-white text-[#F69F11] px-4 py-2 rounded-full text-xs sm:text-sm font-bold">
-          {project.category}
+          {project.category ?? "General"}
         </div>
       </div>
 
@@ -33,11 +33,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="p-6 sm:p-8">
         {/* Title */}
         <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-          {project.title}
+          {project.name ?? project.title}
         </h3>
 
         {/* Subtitle */}
-        <p className="text-[#F69F11] font-semibold mb-4">{project.subtitle}</p>
+        <p className="text-[#F69F11] font-semibold mb-4">
+          {project.subtitle ?? project.variant ?? project.starts_from}
+        </p>
 
         {/* Location */}
         <p className="text-gray-600 mb-6 flex items-center gap-2">
@@ -54,12 +56,15 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         {/* Buttons */}
         <div className="flex gap-4 flex-col sm:flex-row">
-          <button className="flex-1 px-6 py-3 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105">
-            ENTER NOW →
-          </button>
-          <button className="flex-1 px-6 py-3 border-2 border-[#F69F11] text-[#F69F11] font-bold rounded-lg hover:bg-[#F69F11] hover:text-white transition-all transform hover:scale-105">
-            MORE DETAILS →
-          </button>
+          <a
+          href="/projects"
+          className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105"
+        >
+          VIEW PROJECTS →
+        </a>
+        <button className="flex-1 px-6 py-3 border-2 border-[#F69F11] text-[#F69F11] font-bold rounded-lg hover:bg-[#F69F11] hover:text-white transition-all transform hover:scale-105">
+          MORE DETAILS →
+        </button>
         </div>
       </div>
     </div>

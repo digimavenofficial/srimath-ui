@@ -16,3 +16,4 @@ export { default as MobileMenu } from "./MobileMenu";
 export { default as SiteShell } from "./SiteShell";
 export { default as LoginForm } from "./LoginForm";
 export { default as BlogManager } from "./BlogManager";
+export { default as ProjectManager } from "./ProjectManager";

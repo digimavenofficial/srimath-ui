@@ -6,10 +6,10 @@ export default function PartnershipSection() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-8">
+          <h2 className="text-2xl sm:text-5xl lg:text-4xl font-bold leading-tight mb-4">
             MORE THAN CONSTRUCTION,
             <br />
-            <span className="text-white bg-[#F69F11] px-8 py-6 rounded-full inline-block mt-4">
+            <span className="text-white bg-[#F69F11] px-4 py-2 rounded-full inline-block mt-4">
               IT IS A PARTNERSHIP.
             </span>
           </h2>
@@ -27,7 +27,7 @@ export default function PartnershipSection() {
         {/* CTA Button */}
         <div className="text-center">
           <a
-            href="#"
+            href="/about"
             className="inline-flex items-center gap-2 px-8 py-4 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105"
           >
             ABOUT US

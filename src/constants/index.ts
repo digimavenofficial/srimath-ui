@@ -8,41 +8,24 @@ import type { Project, Testimonial, StatItem, Feature, NavLink } from "@/types";
 export const BRAND_NAME = "SRIMATH BUILDERS";
 export const WHATSAPP_NUMBER = "+91-98765-43210";
 export const COMPANY_EMAIL = "hello@srimathbuilders.com";
-export const COMPANY_PHONE = "+91-44-XXXX-XXXX";
+export const COMPANY_PHONE = "+91 801 505 0994";
 export const OFFICE_ADDRESS =
-  "123, Temple Road, T Nagar, Chennai - 600017, Tamil Nadu";
+  "Ragham Apartments, M10/G4, 1st Main Rd, Thiruvalluvar Nagar, Thiruvanmiyur, Chennai, Tamil Nadu 600041";
 
 // Navigation Links
 export const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
   {
     label: "About Us",
-    href: "/#about",
-    children: [
-      { label: "Our Story", href: "/#about" },
-      { label: "Leadership", href: "/#about" },
-    ],
+    href: "/about",
   },
   {
     label: "Projects",
-    href: "/#projects",
-    children: [
-      { label: "Ongoing", href: "/#projects" },
-      { label: "Completed", href: "/#projects" },
-      { label: "Upcoming", href: "/#projects" },
-    ],
-  },
-  {
-    label: "Services",
-    href: "/#services",
-    children: [
-      { label: "Residential", href: "/#services" },
-      { label: "Commercial", href: "/#services" },
-    ],
+    href: "/projects"
   },
   { label: "Blog", href: "/blog" },
   { label: "Login", href: "/login" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 // Statistics
@@ -84,7 +67,7 @@ export const FEATURES: Feature[] = [
 // Projects
 export const PROJECTS: Project[] = [
   {
-    id: "1",
+    id: 1,
     title: "SRIMATH GRANDEUR",
     subtitle: "Premium Apartments",
     location: "OMR, Chennai",
@@ -96,7 +79,7 @@ export const PROJECTS: Project[] = [
       "Luxurious apartment complex featuring modern amenities, spacious layouts, and premium finishes.",
   },
   {
-    id: "2",
+    id: 2,
     title: "SRIMATH HEIGHTS",
     subtitle: "Luxury Villas",
     location: "Ambattur, Chennai",
@@ -108,7 +91,7 @@ export const PROJECTS: Project[] = [
       "Exclusive gated community with world-class amenities and premium villa designs.",
   },
   {
-    id: "3",
+    id: 3,
     title: "SRIMATH PLAZA",
     subtitle: "Commercial Complex",
     location: "Guindy, Chennai",
@@ -120,7 +103,7 @@ export const PROJECTS: Project[] = [
       "Modern commercial spaces designed for contemporary businesses.",
   },
   {
-    id: "4",
+    id: 4,
     title: "SRIMATH RIVERSIDE",
     subtitle: "Waterfront Residences",
     location: "Thiruvanmiyur, Chennai",
@@ -176,10 +159,11 @@ export const TESTIMONIALS: Testimonial[] = [
 // Quick Links
 export const QUICK_LINKS = [
   { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
   { label: "Blog", href: "/blog" },
   { label: "Login", href: "/login" },
   { label: "Projects", href: "/#projects" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 // Project Links

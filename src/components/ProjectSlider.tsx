@@ -62,7 +62,7 @@ export default function ProjectSlider() {
         </div>
 
         {/* Navigation and Pagination */}
-        <div className="flex items-center justify-center gap-8 flex-wrap">
+        <div className="flex items-center justify-center gap-4 flex-wrap">
           {/* Previous Button */}
           <button
             onClick={prevSlide}
@@ -129,7 +129,7 @@ export default function ProjectSlider() {
         {/* View All Button */}
         <div className="text-center mt-12">
           <a
-            href="#"
+            href="/projects"
             className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#F69F11] text-[#F69F11] font-bold rounded-lg hover:bg-[#F69F11] hover:text-white transition-all transform hover:scale-105"
           >
             VIEW ALL PROJECTS
