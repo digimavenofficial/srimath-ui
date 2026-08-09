@@ -6,7 +6,7 @@ import type { Project, Testimonial, StatItem, Feature, NavLink } from "@/types";
 
 // Brand Configuration
 export const BRAND_NAME = "SRIMATH BUILDERS";
-export const WHATSAPP_NUMBER = "+91-98765-43210";
+export const WHATSAPP_NUMBER = "+91-80150-50994";
 export const COMPANY_EMAIL = "hello@srimathbuilders.com";
 export const COMPANY_PHONE = "+91 801 505 0994";
 export const OFFICE_ADDRESS =
