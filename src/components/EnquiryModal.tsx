@@ -21,12 +21,12 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
     setMobile("");
     setEmail("");
     setMessage("");
-    setStatusMessage(null);
     setError(null);
   };
 
   const handleClose = () => {
     resetForm();
+    setStatusMessage(null);
     onClose();
   };
 
@@ -51,7 +51,10 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
       }
 
       setStatusMessage("Your enquiry has been sent successfully.");
-      resetForm();
+      setName("");
+      setMobile("");
+      setEmail("");
+      setMessage("");
     } catch (sendError) {
       setError(
         sendError instanceof Error
