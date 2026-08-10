@@ -14,7 +14,7 @@ export default function SiteShell({
   return (
     <main className="min-h-screen flex flex-col bg-white text-gray-900">
       <Header variant={headerVariant} />
-      <div className="pt-24 flex-1">{children}</div>
+      <div className="pt-32 flex-1">{children}</div>
       <Footer />
     </main>
   );

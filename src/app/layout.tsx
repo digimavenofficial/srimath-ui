@@ -1,3 +1,4 @@
+import localFont from "next/font/local";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -10,6 +11,33 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const acuminPro = localFont({
+  src: [
+    {
+      path: "../../public/fonts/Acumin-RPro.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Acumin-ItPro.otf",
+      weight: "400",
+      style: "italic",
+    },
+    {
+      path: "../../public/fonts/Acumin-BdPro.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../../public/fonts/Acumin-BdItPro.otf",
+      weight: "700",
+      style: "italic",
+    },
+  ],
+  variable: "--font-acumin-pro",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -54,10 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang="en" className={`${acuminPro.variable} h-full antialiased`}>
       <head>
         <meta charSet="utf-8" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

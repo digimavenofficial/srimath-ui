@@ -61,6 +61,9 @@ export default function Header({ variant = "public" }: HeaderProps) {
           isScrolled ? "bg-white shadow-md" : "bg-transparent"
         }`}
       >
+        <div className="bg-[#F69F11] text-dark text-center text-sm sm:text-base font-semibold py-2 px-4">
+          Under construction — this website is currently being updated.
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             {/* Logo */}
