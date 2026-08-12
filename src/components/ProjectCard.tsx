@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import type { Project } from "@/types";
 
@@ -9,14 +10,17 @@ interface ProjectCardProps {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-      {/* Image Container */}
+    <Link href={`/projects/${project.id}`} className="block bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
       <div className="relative h-64 sm:h-80 overflow-hidden bg-gray-200">
-        <img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-        />
+        {project.main_image_url || project.image ? (
+          <img
+            src={project.main_image_url ?? project.image}
+            alt={project.title ?? project.name ?? "Project image"}
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-gray-500">No image available</div>
+        )}
 
         {/* Status / Variant Badge */}
         <div className="absolute top-4 left-4 bg-[#F69F11] text-white px-4 py-2 rounded-full text-xs sm:text-sm font-bold">
@@ -54,19 +58,11 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </p>
         )}
 
-        {/* Buttons */}
-        {/* <div className="flex gap-4 flex-col sm:flex-row">
-          <a
-          href="/projects"
-          className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-[#F69F11] text-white font-bold rounded-lg hover:bg-amber-400 transition-all transform hover:scale-105"
-        >
-          VIEW PROJECTS →
-        </a>
-        <button className="flex-1 px-6 py-3 border-2 border-[#F69F11] text-[#F69F11] font-bold rounded-lg hover:bg-[#F69F11] hover:text-white transition-all transform hover:scale-105">
-          MORE DETAILS →
-        </button>
-        </div> */}
+        <div className="flex items-center justify-between text-sm font-semibold text-[#F69F11]">
+          <span>View details</span>
+          <span>→</span>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

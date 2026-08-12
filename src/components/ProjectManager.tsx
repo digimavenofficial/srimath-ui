@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Project, ProjectFormValues } from "@/types";
 import { createSupabaseBrowserClient } from "@/lib/supabase";
@@ -8,6 +8,7 @@ import {
   createProject,
   deleteProject,
   updateProject,
+  uploadImage,
 } from "@/services/project.service";
 
 interface ProjectManagerProps {
@@ -16,6 +17,7 @@ interface ProjectManagerProps {
 
 const emptyFormValues: ProjectFormValues = {
   name: "",
+  title: "",
   location: "",
   size: "",
   category: "",
@@ -23,6 +25,17 @@ const emptyFormValues: ProjectFormValues = {
   image: "",
   startsFrom: "",
   status: "",
+  description: "",
+  flatType: "",
+  deadline: "",
+  mainImageUrl: "",
+  secondaryImageUrl: "",
+  progressImages: [],
+  detailedTitle: "",
+  detailedDescription: "",
+  otherApartmentDetails: "",
+  amenities: "",
+  nearby: "",
 };
 
 export default function ProjectManager({ initialProjects }: ProjectManagerProps) {
@@ -33,12 +46,20 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [mainPreviewUrl, setMainPreviewUrl] = useState<string>("");
+  const [secondaryPreviewUrl, setSecondaryPreviewUrl] = useState<string>("");
+  const [progressPreviewImages, setProgressPreviewImages] = useState<string[]>([]);
+  const progressInputRef = useRef<HTMLInputElement | null>(null);
 
   const sortedProjects = useMemo(() => projects, [projects]);
 
   const resetForm = () => {
     setFormValues(emptyFormValues);
     setEditingId(null);
+    setMainPreviewUrl("");
+    setSecondaryPreviewUrl("");
+    setProgressPreviewImages([]);
   };
 
   const handleChange = (field: keyof ProjectFormValues, value: string) => {
@@ -49,6 +70,7 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
     setEditingId(project.id);
     setFormValues({
       name: project.name ?? "",
+      title: project.title ?? project.name ?? "",
       location: project.location ?? "",
       size: project.size ?? "",
       category: project.category ?? "",
@@ -56,6 +78,17 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
       image: project.image ?? "",
       startsFrom: project.starts_from ?? "",
       status: project.status ?? "",
+      description: project.description ?? "",
+      flatType: project.flat_type ?? "",
+      deadline: project.deadline ?? "",
+      mainImageUrl: project.main_image_url ?? project.image ?? "",
+      secondaryImageUrl: project.secondary_image_url ?? "",
+      progressImages: project.progress_images ?? [],
+      detailedTitle: project.detailed_title ?? "",
+      detailedDescription: project.detailed_description ?? "",
+      otherApartmentDetails: project.other_apartment_details?.map((detail) => `${detail.title}|${detail.description}`).join("\n") ?? "",
+      amenities: project.amenities?.join("\n") ?? "",
+      nearby: project.nearby?.join("\n") ?? "",
     });
     document
       .getElementById("project-form")
@@ -90,6 +123,118 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSingleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    field: "mainImageUrl" | "secondaryImageUrl",
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      setError("Supabase is not configured yet.");
+      return;
+    }
+
+    const previousValue = formValues[field];
+
+    try {
+      setUploadingImage(true);
+      setError(null);
+      const previewUrl = URL.createObjectURL(file);
+      if (field === "mainImageUrl") {
+        setMainPreviewUrl(previewUrl);
+      } else {
+        setSecondaryPreviewUrl(previewUrl);
+      }
+      setFormValues((current) => ({
+        ...current,
+        [field]: "",
+        ...(field === "mainImageUrl" ? { image: "" } : {}),
+      }));
+      const projectId = editingId ? String(editingId) : "draft-project";
+      const url = await uploadImage(supabase, file, projectId);
+      setFormValues((current) => ({
+        ...current,
+        [field]: url,
+        ...(field === "mainImageUrl" ? { image: url } : {}),
+      }));
+      if (field === "mainImageUrl") {
+        setMainPreviewUrl("");
+      } else {
+        setSecondaryPreviewUrl("");
+      }
+      setMessage("Image uploaded successfully.");
+    } catch (uploadError) {
+      setFormValues((current) => ({
+        ...current,
+        [field]: previousValue,
+        ...(field === "mainImageUrl" ? { image: previousValue } : {}),
+      }));
+      if (field === "mainImageUrl") {
+        setMainPreviewUrl("");
+      } else {
+        setSecondaryPreviewUrl("");
+      }
+      setError(uploadError instanceof Error ? uploadError.message : "Image upload failed.");
+    } finally {
+      setUploadingImage(false);
+      event.target.value = "";
+    }
+  };
+
+  const handleProgressImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+
+    if (files.length === 0) {
+      return;
+    }
+
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      setError("Supabase is not configured yet.");
+      return;
+    }
+
+    let previewUrls: string[] = [];
+
+    try {
+      setUploadingImage(true);
+      setError(null);
+      previewUrls = files.map((file) => URL.createObjectURL(file));
+      setProgressPreviewImages((current) => [...current, ...previewUrls]);
+      const projectId = editingId ? String(editingId) : "draft-project";
+      const uploadedUrls = await Promise.all(
+        files.map((file) => uploadImage(supabase, file, projectId)),
+      );
+      setFormValues((current) => ({
+        ...current,
+        progressImages: [...current.progressImages, ...uploadedUrls],
+      }));
+      setProgressPreviewImages((current) => current.filter((url) => !previewUrls.includes(url)));
+      setMessage(`${uploadedUrls.length} progress image${uploadedUrls.length > 1 ? "s" : ""} uploaded successfully.`);
+    } catch (uploadError) {
+      setProgressPreviewImages((current) => current.filter((url) => !current.includes(url)));
+      setError(uploadError instanceof Error ? uploadError.message : "Progress image upload failed.");
+    } finally {
+      setUploadingImage(false);
+      event.target.value = "";
+    }
+  };
+
+  const removeProgressImage = (imageUrl: string) => {
+    setFormValues((current) => ({
+      ...current,
+      progressImages: current.progressImages.filter((url) => url !== imageUrl),
+    }));
+    setProgressPreviewImages((current) => current.filter((url) => url !== imageUrl));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -179,11 +324,30 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
         </h2>
         <form className="mt-6 grid gap-5 md:grid-cols-2" onSubmit={handleSubmit}>
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Name</span>
+            <span className="text-sm font-medium text-gray-700">Project Name</span>
             <input
               required
               value={formValues.name}
               onChange={(event) => handleChange("name", event.target.value)}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Display Title</span>
+            <input
+              value={formValues.title}
+              onChange={(event) => handleChange("title", event.target.value)}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Description</span>
+            <textarea
+              value={formValues.description}
+              onChange={(event) => handleChange("description", event.target.value)}
+              rows={3}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
@@ -194,6 +358,15 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
               required
               value={formValues.location}
               onChange={(event) => handleChange("location", event.target.value)}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2">
+            <span className="text-sm font-medium text-gray-700">Flat Type</span>
+            <input
+              value={formValues.flatType}
+              onChange={(event) => handleChange("flatType", event.target.value)}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
@@ -226,10 +399,132 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
           </label>
 
           <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Image URL</span>
+            <span className="text-sm font-medium text-gray-700">Deadline</span>
             <input
-              value={formValues.image}
-              onChange={(event) => handleChange("image", event.target.value)}
+              type="date"
+              value={formValues.deadline}
+              onChange={(event) => handleChange("deadline", event.target.value)}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Main Image (max 50KB)</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => handleSingleImageUpload(event, "mainImageUrl")}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+            {(mainPreviewUrl || formValues.mainImageUrl) ? (
+              <div className="overflow-hidden rounded-2xl border border-gray-200">
+                <img src={mainPreviewUrl || formValues.mainImageUrl} alt="Main project preview" className="h-40 w-full object-cover" />
+              </div>
+            ) : null}
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Secondary Image (max 50KB)</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(event) => handleSingleImageUpload(event, "secondaryImageUrl")}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+            {(secondaryPreviewUrl || formValues.secondaryImageUrl) ? (
+              <div className="overflow-hidden rounded-2xl border border-gray-200">
+                <img src={secondaryPreviewUrl || formValues.secondaryImageUrl} alt="Secondary project preview" className="h-40 w-full object-cover" />
+              </div>
+            ) : null}
+          </label>
+
+          <div className="space-y-3 md:col-span-2">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-sm font-medium text-gray-700">Progress Images</span>
+              <button
+                type="button"
+                onClick={() => progressInputRef.current?.click()}
+                className="rounded-full border border-[#F69F11] px-3 py-2 text-sm font-semibold text-[#F69F11]"
+              >
+                + Add Images
+              </button>
+            </div>
+            <input
+              ref={progressInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={handleProgressImageUpload}
+            />
+            {uploadingImage ? <p className="text-sm text-gray-500">Uploading image...</p> : null}
+            {(progressPreviewImages.length > 0 || formValues.progressImages.length > 0) ? (
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {[...progressPreviewImages, ...formValues.progressImages].map((imageUrl) => (
+                  <div key={imageUrl} className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
+                    <img src={imageUrl} alt="Project progress preview" className="h-32 w-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeProgressImage(imageUrl)}
+                      className="w-full px-3 py-2 text-sm font-semibold text-red-600"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="rounded-2xl border border-dashed border-gray-300 px-4 py-4 text-sm text-gray-500">
+                Add progress images to showcase the construction journey.
+              </p>
+            )}
+          </div>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Detailed Title</span>
+            <input
+              value={formValues.detailedTitle}
+              onChange={(event) => handleChange("detailedTitle", event.target.value)}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Detailed Description</span>
+            <textarea
+              value={formValues.detailedDescription}
+              onChange={(event) => handleChange("detailedDescription", event.target.value)}
+              rows={3}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Other Apartment Details (one per line, format: Title|Description)</span>
+            <textarea
+              value={formValues.otherApartmentDetails}
+              onChange={(event) => handleChange("otherApartmentDetails", event.target.value)}
+              rows={4}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Amenities (one per line)</span>
+            <textarea
+              value={formValues.amenities}
+              onChange={(event) => handleChange("amenities", event.target.value)}
+              rows={4}
+              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+            />
+          </label>
+
+          <label className="space-y-2 md:col-span-2">
+            <span className="text-sm font-medium text-gray-700">Nearby Places (one per line)</span>
+            <textarea
+              value={formValues.nearby}
+              onChange={(event) => handleChange("nearby", event.target.value)}
+              rows={4}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>

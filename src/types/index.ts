@@ -2,6 +2,11 @@
  * Project Types and Interfaces
  */
 
+export interface ProjectDetailItem {
+  title: string;
+  description: string;
+}
+
 export interface Project {
   id: number;
   name?: string;
@@ -9,12 +14,22 @@ export interface Project {
   subtitle?: string;
   location: string;
   image?: string;
+  main_image_url?: string;
+  secondary_image_url?: string;
+  progress_images?: string[];
   status?: string;
   category?: string;
   variant?: string;
   size?: string;
+  flat_type?: string;
+  deadline?: string;
   starts_from?: string;
   description?: string;
+  detailed_title?: string;
+  detailed_description?: string;
+  other_apartment_details?: ProjectDetailItem[];
+  amenities?: string[];
+  nearby?: string[];
   created_at?: string;
   updated_at?: string;
 }
@@ -28,6 +43,18 @@ export interface ProjectFormValues {
   image: string;
   startsFrom: string;
   status: string;
+  title: string;
+  description: string;
+  flatType: string;
+  deadline: string;
+  mainImageUrl: string;
+  secondaryImageUrl: string;
+  progressImages: string[];
+  detailedTitle: string;
+  detailedDescription: string;
+  otherApartmentDetails: string;
+  amenities: string;
+  nearby: string;
 }
 
 export interface Testimonial {
