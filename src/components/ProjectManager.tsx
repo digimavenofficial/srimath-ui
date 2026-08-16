@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { Project, ProjectFormValues } from "@/types";
@@ -8,6 +8,7 @@ import { createSupabaseBrowserClient } from "@/lib/supabase";
 import {
   createProject,
   deleteProject,
+  removeStorageFileByUrl,
   updateProject,
   uploadImage,
 } from "@/services/project.service";
@@ -58,7 +59,16 @@ export default function ProjectManager({
   const [progressPreviewImages, setProgressPreviewImages] = useState<string[]>(
     [],
   );
+  const [showForm, setShowForm] = useState(view !== "list");
   const progressInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (view === "form") {
+      setShowForm(true);
+    } else if (view === "list") {
+      setShowForm(false);
+    }
+  }, [view]);
 
   const sortedProjects = useMemo(() => projects, [projects]);
 
@@ -68,6 +78,16 @@ export default function ProjectManager({
     setMainPreviewUrl("");
     setSecondaryPreviewUrl("");
     setProgressPreviewImages([]);
+    setShowForm(view !== "list");
+  };
+
+  const openNewForm = () => {
+    setFormValues(emptyFormValues);
+    setEditingId(null);
+    setMainPreviewUrl("");
+    setSecondaryPreviewUrl("");
+    setProgressPreviewImages([]);
+    setShowForm(true);
   };
 
   const handleChange = (field: keyof ProjectFormValues, value: string) => {
@@ -76,6 +96,7 @@ export default function ProjectManager({
 
   const handleEdit = (project: Project) => {
     setEditingId(project.id);
+    setShowForm(true);
     setFormValues({
       name: project.name ?? "",
       title: project.title ?? project.name ?? "",
@@ -214,6 +235,97 @@ export default function ProjectManager({
     }
   };
 
+  const removeMainImage = async () => {
+    if (!formValues.mainImageUrl) {
+      return;
+    }
+
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      setError("Supabase is not configured yet.");
+      toast.error("Supabase is not configured yet.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      await removeStorageFileByUrl(supabase, formValues.mainImageUrl);
+      setFormValues((current) => ({
+        ...current,
+        mainImageUrl: "",
+        image: "",
+      }));
+      setMainPreviewUrl("");
+      if (editingId) {
+        const updatedProject = await updateProject(supabase, editingId, {
+          ...formValues,
+          mainImageUrl: "",
+          image: "",
+        });
+        setProjects((current) =>
+          current.map((project) =>
+            project.id === editingId ? updatedProject : project,
+          ),
+        );
+      }
+      toast.success("Main project image removed from storage.");
+    } catch (removeError) {
+      const message =
+        removeError instanceof Error
+          ? removeError.message
+          : "Failed to remove main image.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeSecondaryImage = async () => {
+    if (!formValues.secondaryImageUrl) {
+      return;
+    }
+
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      setError("Supabase is not configured yet.");
+      toast.error("Supabase is not configured yet.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      await removeStorageFileByUrl(supabase, formValues.secondaryImageUrl);
+      setFormValues((current) => ({ ...current, secondaryImageUrl: "" }));
+      setSecondaryPreviewUrl("");
+      if (editingId) {
+        const updatedProject = await updateProject(supabase, editingId, {
+          ...formValues,
+          secondaryImageUrl: "",
+        });
+        setProjects((current) =>
+          current.map((project) =>
+            project.id === editingId ? updatedProject : project,
+          ),
+        );
+      }
+      toast.success("Secondary project image removed from storage.");
+    } catch (removeError) {
+      const message =
+        removeError instanceof Error
+          ? removeError.message
+          : "Failed to remove secondary image.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleProgressImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -269,14 +381,52 @@ export default function ProjectManager({
     }
   };
 
-  const removeProgressImage = (imageUrl: string) => {
-    setFormValues((current) => ({
-      ...current,
-      progressImages: current.progressImages.filter((url) => url !== imageUrl),
-    }));
-    setProgressPreviewImages((current) =>
-      current.filter((url) => url !== imageUrl),
-    );
+  const removeProgressImage = async (imageUrl: string) => {
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      setError("Supabase is not configured yet.");
+      toast.error("Supabase is not configured yet.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      await removeStorageFileByUrl(supabase, imageUrl);
+      setFormValues((current) => ({
+        ...current,
+        progressImages: current.progressImages.filter(
+          (url) => url !== imageUrl,
+        ),
+      }));
+      setProgressPreviewImages((current) =>
+        current.filter((url) => url !== imageUrl),
+      );
+      if (editingId) {
+        const updatedProject = await updateProject(supabase, editingId, {
+          ...formValues,
+          progressImages: formValues.progressImages.filter(
+            (url) => url !== imageUrl,
+          ),
+        });
+        setProjects((current) =>
+          current.map((project) =>
+            project.id === editingId ? updatedProject : project,
+          ),
+        );
+      }
+      toast.success("Project progress image removed from storage.");
+    } catch (removeError) {
+      const message =
+        removeError instanceof Error
+          ? removeError.message
+          : "Failed to remove project progress image.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -346,8 +496,7 @@ export default function ProjectManager({
           </div>
           <button
             type="button"
-            onClick={resetForm}
-            disabled={view === "list"}
+            onClick={openNewForm}
             className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#F69F11] hover:text-gray-950"
           >
             New Project
@@ -370,7 +519,7 @@ export default function ProjectManager({
         )}
       </section>
 
-      {view !== "list" ? (
+      {view !== "list" || showForm ? (
         <section
           id="project-form"
           className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
@@ -506,12 +655,21 @@ export default function ProjectManager({
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
               {mainPreviewUrl || formValues.mainImageUrl ? (
-                <div className="overflow-hidden rounded-2xl border border-gray-200">
-                  <img
-                    src={mainPreviewUrl || formValues.mainImageUrl}
-                    alt="Main project preview"
-                    className="h-40 w-full object-cover"
-                  />
+                <div className="space-y-3">
+                  <div className="overflow-hidden rounded-2xl border border-gray-200">
+                    <img
+                      src={mainPreviewUrl || formValues.mainImageUrl}
+                      alt="Main project preview"
+                      className="h-40 w-full object-cover"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeMainImage}
+                    className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    Remove image
+                  </button>
                 </div>
               ) : null}
             </label>
@@ -529,12 +687,21 @@ export default function ProjectManager({
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
               {secondaryPreviewUrl || formValues.secondaryImageUrl ? (
-                <div className="overflow-hidden rounded-2xl border border-gray-200">
-                  <img
-                    src={secondaryPreviewUrl || formValues.secondaryImageUrl}
-                    alt="Secondary project preview"
-                    className="h-40 w-full object-cover"
-                  />
+                <div className="space-y-3">
+                  <div className="overflow-hidden rounded-2xl border border-gray-200">
+                    <img
+                      src={secondaryPreviewUrl || formValues.secondaryImageUrl}
+                      alt="Secondary project preview"
+                      className="h-40 w-full object-cover"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={removeSecondaryImage}
+                    className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    Remove image
+                  </button>
                 </div>
               ) : null}
             </label>
@@ -582,7 +749,7 @@ export default function ProjectManager({
                           onClick={() => removeProgressImage(imageUrl)}
                           className="w-full px-3 py-2 text-sm font-semibold text-red-600"
                         >
-                          Remove
+                          Remove from storage
                         </button>
                       </div>
                     ),
@@ -702,7 +869,7 @@ export default function ProjectManager({
         </section>
       ) : null}
 
-      {view !== "form" ? (
+      {view !== "form" || !showForm ? (
         <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-2xl font-bold text-gray-900">

@@ -1,12 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { BlogFormValues, BlogRecord } from "@/types";
 import { buildBlogFormValues } from "@/lib/blog";
 import { createSupabaseBrowserClient } from "@/lib/supabase";
-import { createBlog, deleteBlog, updateBlog } from "@/services/blog.service";
+import {
+  createBlog,
+  deleteBlog,
+  removeStorageFileByUrl,
+  updateBlog,
+  uploadImage,
+} from "@/services/blog.service";
 
 interface BlogManagerProps {
   initialBlogs: BlogRecord[];
@@ -26,12 +32,28 @@ export default function BlogManager({
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showForm, setShowForm] = useState(view !== "list");
+
+  useEffect(() => {
+    if (view === "form") {
+      setShowForm(true);
+    } else if (view === "list") {
+      setShowForm(false);
+    }
+  }, [view]);
 
   const sortedBlogs = useMemo(() => blogs, [blogs]);
 
   const resetForm = () => {
     setFormValues(emptyFormValues);
     setEditingId(null);
+    setShowForm(view !== "list");
+  };
+
+  const openNewForm = () => {
+    setFormValues(emptyFormValues);
+    setEditingId(null);
+    setShowForm(true);
   };
 
   const handleChange = (
@@ -43,10 +65,94 @@ export default function BlogManager({
 
   const handleEdit = (blog: BlogRecord) => {
     setEditingId(blog.id);
+    setShowForm(true);
     setFormValues(buildBlogFormValues(blog));
     document
       .getElementById("blog-form")
       ?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleCoverImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      const message = "Supabase credentials are not configured yet.";
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
+    const previousValue = formValues.coverImage;
+
+    try {
+      setLoading(true);
+      setError(null);
+      setFormValues((current) => ({ ...current, coverImage: "" }));
+      const blogId = editingId ? String(editingId) : "blog-images";
+      const url = await uploadImage(supabase, file, blogId);
+      setFormValues((current) => ({ ...current, coverImage: url }));
+      toast.success("Blog cover image uploaded successfully.");
+    } catch (uploadError) {
+      setFormValues((current) => ({ ...current, coverImage: previousValue }));
+      const message =
+        uploadError instanceof Error
+          ? uploadError.message
+          : "Image upload failed.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+      event.target.value = "";
+    }
+  };
+
+  const handleRemoveCoverImage = async () => {
+    if (!formValues.coverImage) {
+      return;
+    }
+
+    const supabase = createSupabaseBrowserClient();
+
+    if (!supabase) {
+      const message = "Supabase credentials are not configured yet.";
+      setError(message);
+      toast.error(message);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      await removeStorageFileByUrl(supabase, formValues.coverImage);
+      setFormValues((current) => ({ ...current, coverImage: "" }));
+      if (editingId) {
+        const updatedBlog = await updateBlog(supabase, editingId, {
+          ...formValues,
+          coverImage: "",
+        });
+        setBlogs((current) =>
+          current.map((blog) => (blog.id === editingId ? updatedBlog : blog)),
+        );
+      }
+      toast.success("Blog cover image removed from storage.");
+    } catch (removeError) {
+      const message =
+        removeError instanceof Error
+          ? removeError.message
+          : "Failed to remove blog cover image.";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = async (id: number) => {
@@ -145,8 +251,7 @@ export default function BlogManager({
           </div>
           <button
             type="button"
-            onClick={resetForm}
-            disabled={view === "list"}
+            onClick={openNewForm}
             className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#F69F11] hover:text-gray-950"
           >
             New Blog
@@ -169,7 +274,7 @@ export default function BlogManager({
         )}
       </section>
 
-      {view !== "list" ? (
+      {view !== "list" || showForm ? (
         <section
           id="blog-form"
           className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
@@ -200,17 +305,32 @@ export default function BlogManager({
               />
             </label>
 
-            <label className="space-y-2">
+            <label className="space-y-2 md:col-span-2">
               <span className="text-sm font-medium text-gray-700">
-                Featured Image URL
+                Featured Image (max 50KB)
               </span>
               <input
-                value={formValues.coverImage}
-                onChange={(event) =>
-                  handleChange("coverImage", event.target.value)
-                }
+                type="file"
+                accept="image/*"
+                onChange={handleCoverImageUpload}
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
+              {formValues.coverImage ? (
+                <div className="flex items-center gap-3">
+                  <img
+                    src={formValues.coverImage}
+                    alt="Blog cover preview"
+                    className="h-20 w-20 rounded-xl object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemoveCoverImage}
+                    className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                  >
+                    Remove image
+                  </button>
+                </div>
+              ) : null}
             </label>
 
             <label className="space-y-2 md:col-span-2">
@@ -326,7 +446,7 @@ export default function BlogManager({
         </section>
       ) : null}
 
-      {view !== "form" ? (
+      {view !== "form" || !showForm ? (
         <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-2xl font-bold text-gray-900">Existing Blogs</h2>

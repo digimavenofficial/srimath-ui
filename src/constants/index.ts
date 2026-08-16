@@ -21,8 +21,10 @@ export const NAV_LINKS: NavLink[] = [
   },
   {
     label: "Projects",
-    href: "/projects"
+    href: "/projects",
   },
+  { label: "Construction", href: "/construction" },
+  { label: "Joint Venture", href: "/joint-venture" },
   { label: "Blog", href: "/blog" },
   { label: "Login", href: "/login" },
   { label: "Contact Us", href: "/contact" },

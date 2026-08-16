@@ -19,7 +19,10 @@ type ProjectRow = {
   description?: string;
   detailed_title?: string;
   detailed_description?: string;
-  other_apartment_details?: Array<{ title: string; description: string }> | null;
+  other_apartment_details?: Array<{
+    title: string;
+    description: string;
+  }> | null;
   amenities?: string[] | null;
   nearby?: string[] | null;
   created_at?: string;
@@ -35,7 +38,48 @@ function sanitizeImageValue(value?: string) {
 }
 
 function sanitizeImageList(values?: string[] | null) {
-  return (values ?? []).filter((value) => Boolean(value) && !value.startsWith("blob:"));
+  return (values ?? []).filter(
+    (value) => Boolean(value) && !value.startsWith("blob:"),
+  );
+}
+
+export async function removeStorageFileByUrl(
+  client: SupabaseClient,
+  url?: string | null,
+) {
+  if (!url) {
+    return false;
+  }
+
+  const bucketNames = ["project-images", "blog-images", "images"];
+
+  try {
+    const parsedUrl = new URL(url);
+    const pathname = decodeURIComponent(parsedUrl.pathname);
+
+    for (const bucketName of bucketNames) {
+      const prefix = `/storage/v1/object/public/${bucketName}/`;
+
+      if (!pathname.includes(prefix)) {
+        continue;
+      }
+
+      const objectPath = pathname.slice(prefix.length).replace(/^\/+/, "");
+      const { error } = await client.storage
+        .from(bucketName)
+        .remove([objectPath]);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      return true;
+    }
+  } catch {
+    return false;
+  }
+
+  return false;
 }
 
 function mapProjectRow(row: ProjectRow): Project {
@@ -124,15 +168,16 @@ export async function createProject(
             .filter(Boolean)
             .map((entry) => {
               const [title, ...rest] = entry.split("|");
-              return { title: title?.trim() ?? "Detail", description: rest.join("|").trim() };
+              return {
+                title: title?.trim() ?? "Detail",
+                description: rest.join("|").trim(),
+              };
             })
         : [],
       amenities: values.amenities
         ? values.amenities.split("\n").filter(Boolean)
         : [],
-      nearby: values.nearby
-        ? values.nearby.split("\n").filter(Boolean)
-        : [],
+      nearby: values.nearby ? values.nearby.split("\n").filter(Boolean) : [],
     })
     .select("*")
     .single();
@@ -174,15 +219,16 @@ export async function updateProject(
             .filter(Boolean)
             .map((entry) => {
               const [title, ...rest] = entry.split("|");
-              return { title: title?.trim() ?? "Detail", description: rest.join("|").trim() };
+              return {
+                title: title?.trim() ?? "Detail",
+                description: rest.join("|").trim(),
+              };
             })
         : [],
       amenities: values.amenities
         ? values.amenities.split("\n").filter(Boolean)
         : [],
-      nearby: values.nearby
-        ? values.nearby.split("\n").filter(Boolean)
-        : [],
+      nearby: values.nearby ? values.nearby.split("\n").filter(Boolean) : [],
     })
     .eq("id", id)
     .select("*")
@@ -196,10 +242,35 @@ export async function updateProject(
 }
 
 export async function deleteProject(client: SupabaseClient, id: number) {
+  const { data: existingProject, error: fetchError } = await client
+    .from("projects")
+    .select("image, main_image_url, secondary_image_url, progress_images")
+    .eq("id", id)
+    .single();
+
+  if (fetchError && fetchError.code !== "PGRST116") {
+    throw new Error(fetchError.message);
+  }
+
+  const imageUrls = [
+    existingProject?.image,
+    existingProject?.main_image_url,
+    existingProject?.secondary_image_url,
+    ...(existingProject?.progress_images ?? []),
+  ].filter((value): value is string => Boolean(value));
+
   const { error } = await client.from("projects").delete().eq("id", id);
 
   if (error) {
     throw new Error(error.message);
+  }
+
+  for (const imageUrl of imageUrls) {
+    try {
+      await removeStorageFileByUrl(client, imageUrl);
+    } catch {
+      // Ignore storage cleanup failures to avoid breaking the delete action.
+    }
   }
 }
 
