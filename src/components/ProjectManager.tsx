@@ -38,10 +38,13 @@ const emptyFormValues: ProjectFormValues = {
   nearby: "",
 };
 
-export default function ProjectManager({ initialProjects }: ProjectManagerProps) {
+export default function ProjectManager({
+  initialProjects,
+}: ProjectManagerProps) {
   const router = useRouter();
   const [projects, setProjects] = useState(initialProjects);
-  const [formValues, setFormValues] = useState<ProjectFormValues>(emptyFormValues);
+  const [formValues, setFormValues] =
+    useState<ProjectFormValues>(emptyFormValues);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +52,9 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
   const [uploadingImage, setUploadingImage] = useState(false);
   const [mainPreviewUrl, setMainPreviewUrl] = useState<string>("");
   const [secondaryPreviewUrl, setSecondaryPreviewUrl] = useState<string>("");
-  const [progressPreviewImages, setProgressPreviewImages] = useState<string[]>([]);
+  const [progressPreviewImages, setProgressPreviewImages] = useState<string[]>(
+    [],
+  );
   const progressInputRef = useRef<HTMLInputElement | null>(null);
 
   const sortedProjects = useMemo(() => projects, [projects]);
@@ -86,7 +91,10 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
       progressImages: project.progress_images ?? [],
       detailedTitle: project.detailed_title ?? "",
       detailedDescription: project.detailed_description ?? "",
-      otherApartmentDetails: project.other_apartment_details?.map((detail) => `${detail.title}|${detail.description}`).join("\n") ?? "",
+      otherApartmentDetails:
+        project.other_apartment_details
+          ?.map((detail) => `${detail.title}|${detail.description}`)
+          .join("\n") ?? "",
       amenities: project.amenities?.join("\n") ?? "",
       nearby: project.nearby?.join("\n") ?? "",
     });
@@ -158,7 +166,7 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
         [field]: "",
         ...(field === "mainImageUrl" ? { image: "" } : {}),
       }));
-      const projectId = editingId ? String(editingId) : "draft-project";
+      const projectId = editingId ? String(editingId) : "project-images";
       const url = await uploadImage(supabase, file, projectId);
       setFormValues((current) => ({
         ...current,
@@ -182,14 +190,20 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
       } else {
         setSecondaryPreviewUrl("");
       }
-      setError(uploadError instanceof Error ? uploadError.message : "Image upload failed.");
+      setError(
+        uploadError instanceof Error
+          ? uploadError.message
+          : "Image upload failed.",
+      );
     } finally {
       setUploadingImage(false);
       event.target.value = "";
     }
   };
 
-  const handleProgressImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProgressImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const files = Array.from(event.target.files ?? []);
 
     if (files.length === 0) {
@@ -210,7 +224,7 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
       setError(null);
       previewUrls = files.map((file) => URL.createObjectURL(file));
       setProgressPreviewImages((current) => [...current, ...previewUrls]);
-      const projectId = editingId ? String(editingId) : "draft-project";
+      const projectId = editingId ? String(editingId) : "progress-images";
       const uploadedUrls = await Promise.all(
         files.map((file) => uploadImage(supabase, file, projectId)),
       );
@@ -218,11 +232,21 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
         ...current,
         progressImages: [...current.progressImages, ...uploadedUrls],
       }));
-      setProgressPreviewImages((current) => current.filter((url) => !previewUrls.includes(url)));
-      setMessage(`${uploadedUrls.length} progress image${uploadedUrls.length > 1 ? "s" : ""} uploaded successfully.`);
+      setProgressPreviewImages((current) =>
+        current.filter((url) => !previewUrls.includes(url)),
+      );
+      setMessage(
+        `${uploadedUrls.length} progress image${uploadedUrls.length > 1 ? "s" : ""} uploaded successfully.`,
+      );
     } catch (uploadError) {
-      setProgressPreviewImages((current) => current.filter((url) => !current.includes(url)));
-      setError(uploadError instanceof Error ? uploadError.message : "Progress image upload failed.");
+      setProgressPreviewImages((current) =>
+        current.filter((url) => !current.includes(url)),
+      );
+      setError(
+        uploadError instanceof Error
+          ? uploadError.message
+          : "Progress image upload failed.",
+      );
     } finally {
       setUploadingImage(false);
       event.target.value = "";
@@ -234,7 +258,9 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
       ...current,
       progressImages: current.progressImages.filter((url) => url !== imageUrl),
     }));
-    setProgressPreviewImages((current) => current.filter((url) => url !== imageUrl));
+    setProgressPreviewImages((current) =>
+      current.filter((url) => url !== imageUrl),
+    );
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -291,7 +317,9 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
             <p className="text-sm uppercase tracking-[0.25em] text-[#F69F11] font-semibold">
               Admin Dashboard
             </p>
-            <h1 className="mt-2 text-3xl font-bold text-gray-900">Project Management</h1>
+            <h1 className="mt-2 text-3xl font-bold text-gray-900">
+              Project Management
+            </h1>
           </div>
           <button
             type="button"
@@ -318,13 +346,21 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
         )}
       </section>
 
-      <section id="project-form" className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
+      <section
+        id="project-form"
+        className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
+      >
         <h2 className="text-2xl font-bold text-gray-900">
           {editingId ? "Edit Project" : "Create Project"}
         </h2>
-        <form className="mt-6 grid gap-5 md:grid-cols-2" onSubmit={handleSubmit}>
+        <form
+          className="mt-6 grid gap-5 md:grid-cols-2"
+          onSubmit={handleSubmit}
+        >
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Project Name</span>
+            <span className="text-sm font-medium text-gray-700">
+              Project Name
+            </span>
             <input
               required
               value={formValues.name}
@@ -334,7 +370,9 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Display Title</span>
+            <span className="text-sm font-medium text-gray-700">
+              Display Title
+            </span>
             <input
               value={formValues.title}
               onChange={(event) => handleChange("title", event.target.value)}
@@ -343,10 +381,14 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Description</span>
+            <span className="text-sm font-medium text-gray-700">
+              Description
+            </span>
             <textarea
               value={formValues.description}
-              onChange={(event) => handleChange("description", event.target.value)}
+              onChange={(event) =>
+                handleChange("description", event.target.value)
+              }
               rows={3}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
@@ -409,38 +451,56 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Main Image (max 50KB)</span>
+            <span className="text-sm font-medium text-gray-700">
+              Main Image (max 50KB)
+            </span>
             <input
               type="file"
               accept="image/*"
-              onChange={(event) => handleSingleImageUpload(event, "mainImageUrl")}
+              onChange={(event) =>
+                handleSingleImageUpload(event, "mainImageUrl")
+              }
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
-            {(mainPreviewUrl || formValues.mainImageUrl) ? (
+            {mainPreviewUrl || formValues.mainImageUrl ? (
               <div className="overflow-hidden rounded-2xl border border-gray-200">
-                <img src={mainPreviewUrl || formValues.mainImageUrl} alt="Main project preview" className="h-40 w-full object-cover" />
+                <img
+                  src={mainPreviewUrl || formValues.mainImageUrl}
+                  alt="Main project preview"
+                  className="h-40 w-full object-cover"
+                />
               </div>
             ) : null}
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Secondary Image (max 50KB)</span>
+            <span className="text-sm font-medium text-gray-700">
+              Secondary Image (max 50KB)
+            </span>
             <input
               type="file"
               accept="image/*"
-              onChange={(event) => handleSingleImageUpload(event, "secondaryImageUrl")}
+              onChange={(event) =>
+                handleSingleImageUpload(event, "secondaryImageUrl")
+              }
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
-            {(secondaryPreviewUrl || formValues.secondaryImageUrl) ? (
+            {secondaryPreviewUrl || formValues.secondaryImageUrl ? (
               <div className="overflow-hidden rounded-2xl border border-gray-200">
-                <img src={secondaryPreviewUrl || formValues.secondaryImageUrl} alt="Secondary project preview" className="h-40 w-full object-cover" />
+                <img
+                  src={secondaryPreviewUrl || formValues.secondaryImageUrl}
+                  alt="Secondary project preview"
+                  className="h-40 w-full object-cover"
+                />
               </div>
             ) : null}
           </label>
 
           <div className="space-y-3 md:col-span-2">
             <div className="flex items-center justify-between gap-3">
-              <span className="text-sm font-medium text-gray-700">Progress Images</span>
+              <span className="text-sm font-medium text-gray-700">
+                Progress Images
+              </span>
               <button
                 type="button"
                 onClick={() => progressInputRef.current?.click()}
@@ -457,21 +517,33 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
               className="hidden"
               onChange={handleProgressImageUpload}
             />
-            {uploadingImage ? <p className="text-sm text-gray-500">Uploading image...</p> : null}
-            {(progressPreviewImages.length > 0 || formValues.progressImages.length > 0) ? (
+            {uploadingImage ? (
+              <p className="text-sm text-gray-500">Uploading image...</p>
+            ) : null}
+            {progressPreviewImages.length > 0 ||
+            formValues.progressImages.length > 0 ? (
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {[...progressPreviewImages, ...formValues.progressImages].map((imageUrl) => (
-                  <div key={imageUrl} className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
-                    <img src={imageUrl} alt="Project progress preview" className="h-32 w-full object-cover" />
-                    <button
-                      type="button"
-                      onClick={() => removeProgressImage(imageUrl)}
-                      className="w-full px-3 py-2 text-sm font-semibold text-red-600"
+                {[...progressPreviewImages, ...formValues.progressImages].map(
+                  (imageUrl) => (
+                    <div
+                      key={imageUrl}
+                      className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50"
                     >
-                      Remove
-                    </button>
-                  </div>
-                ))}
+                      <img
+                        src={imageUrl}
+                        alt="Project progress preview"
+                        className="h-32 w-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeProgressImage(imageUrl)}
+                        className="w-full px-3 py-2 text-sm font-semibold text-red-600"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ),
+                )}
               </div>
             ) : (
               <p className="rounded-2xl border border-dashed border-gray-300 px-4 py-4 text-sm text-gray-500">
@@ -481,46 +553,64 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
           </div>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Detailed Title</span>
+            <span className="text-sm font-medium text-gray-700">
+              Detailed Title
+            </span>
             <input
               value={formValues.detailedTitle}
-              onChange={(event) => handleChange("detailedTitle", event.target.value)}
+              onChange={(event) =>
+                handleChange("detailedTitle", event.target.value)
+              }
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Detailed Description</span>
+            <span className="text-sm font-medium text-gray-700">
+              Detailed Description
+            </span>
             <textarea
               value={formValues.detailedDescription}
-              onChange={(event) => handleChange("detailedDescription", event.target.value)}
+              onChange={(event) =>
+                handleChange("detailedDescription", event.target.value)
+              }
               rows={3}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Other Apartment Details (one per line, format: Title|Description)</span>
+            <span className="text-sm font-medium text-gray-700">
+              Other Apartment Details (one per line, format: Title|Description)
+            </span>
             <textarea
               value={formValues.otherApartmentDetails}
-              onChange={(event) => handleChange("otherApartmentDetails", event.target.value)}
+              onChange={(event) =>
+                handleChange("otherApartmentDetails", event.target.value)
+              }
               rows={4}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Amenities (one per line)</span>
+            <span className="text-sm font-medium text-gray-700">
+              Amenities (one per line)
+            </span>
             <textarea
               value={formValues.amenities}
-              onChange={(event) => handleChange("amenities", event.target.value)}
+              onChange={(event) =>
+                handleChange("amenities", event.target.value)
+              }
               rows={4}
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Nearby Places (one per line)</span>
+            <span className="text-sm font-medium text-gray-700">
+              Nearby Places (one per line)
+            </span>
             <textarea
               value={formValues.nearby}
               onChange={(event) => handleChange("nearby", event.target.value)}
@@ -530,10 +620,14 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
           </label>
 
           <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Starts From</span>
+            <span className="text-sm font-medium text-gray-700">
+              Starts From
+            </span>
             <input
               value={formValues.startsFrom}
-              onChange={(event) => handleChange("startsFrom", event.target.value)}
+              onChange={(event) =>
+                handleChange("startsFrom", event.target.value)
+              }
               className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
             />
           </label>
@@ -544,7 +638,11 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
               disabled={loading}
               className="rounded-xl bg-[#F69F11] px-5 py-3 font-semibold text-gray-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? "Saving..." : editingId ? "Update Project" : "Create Project"}
+              {loading
+                ? "Saving..."
+                : editingId
+                  ? "Update Project"
+                  : "Create Project"}
             </button>
             {editingId && (
               <button
@@ -561,7 +659,9 @@ export default function ProjectManager({ initialProjects }: ProjectManagerProps)
 
       <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-2xl font-bold text-gray-900">Existing Projects</h2>
+          <h2 className="text-2xl font-bold text-gray-900">
+            Existing Projects
+          </h2>
           <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
             {sortedProjects.length} projects
           </span>
