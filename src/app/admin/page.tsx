@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { SiteShell, BlogManager, ProjectManager } from "@/components";
+import { SiteShell, AdminDashboardTabs } from "@/components";
 import { createSupabaseServerClient } from "@/lib/supabase.server";
 import { getAllBlogs } from "@/services/blog.service";
 import { getAllProjects } from "@/services/project.service";
@@ -25,9 +25,8 @@ export default async function AdminPage() {
   return (
     <SiteShell headerVariant="admin">
       <section className="px-4 py-16 sm:py-20 lg:py-24">
-        <div className="mx-auto max-w-7xl space-y-16">
-          <BlogManager initialBlogs={blogs} />
-          <ProjectManager initialProjects={projects} />
+        <div className="mx-auto max-w-7xl">
+          <AdminDashboardTabs blogs={blogs} projects={projects} />
         </div>
       </section>
     </SiteShell>

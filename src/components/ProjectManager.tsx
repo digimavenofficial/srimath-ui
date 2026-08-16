@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import type { Project, ProjectFormValues } from "@/types";
 import { createSupabaseBrowserClient } from "@/lib/supabase";
 import {
@@ -13,6 +14,7 @@ import {
 
 interface ProjectManagerProps {
   initialProjects: Project[];
+  view?: "all" | "form" | "list";
 }
 
 const emptyFormValues: ProjectFormValues = {
@@ -40,6 +42,7 @@ const emptyFormValues: ProjectFormValues = {
 
 export default function ProjectManager({
   initialProjects,
+  view = "all",
 }: ProjectManagerProps) {
   const router = useRouter();
   const [projects, setProjects] = useState(initialProjects);
@@ -111,7 +114,9 @@ export default function ProjectManager({
     const supabase = createSupabaseBrowserClient();
 
     if (!supabase) {
-      setError("Supabase is not configured yet.");
+      const message = "Supabase is not configured yet.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
@@ -120,14 +125,17 @@ export default function ProjectManager({
       setError(null);
       await deleteProject(supabase, id);
       setProjects((current) => current.filter((project) => project.id !== id));
-      setMessage("Project deleted successfully.");
+      const successMessage = "Project deleted successfully.";
+      setMessage(successMessage);
+      toast.success(successMessage);
       router.refresh();
     } catch (deleteError) {
-      setError(
+      const message =
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete project.",
-      );
+          : "Failed to delete project.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -146,7 +154,9 @@ export default function ProjectManager({
     const supabase = createSupabaseBrowserClient();
 
     if (!supabase) {
-      setError("Supabase is not configured yet.");
+      const message = "Supabase is not configured yet.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
@@ -178,7 +188,9 @@ export default function ProjectManager({
       } else {
         setSecondaryPreviewUrl("");
       }
-      setMessage("Image uploaded successfully.");
+      const successMessage = "Image uploaded successfully.";
+      setMessage(successMessage);
+      toast.success(successMessage);
     } catch (uploadError) {
       setFormValues((current) => ({
         ...current,
@@ -190,11 +202,12 @@ export default function ProjectManager({
       } else {
         setSecondaryPreviewUrl("");
       }
-      setError(
+      const message =
         uploadError instanceof Error
           ? uploadError.message
-          : "Image upload failed.",
-      );
+          : "Image upload failed.";
+      setError(message);
+      toast.error(message);
     } finally {
       setUploadingImage(false);
       event.target.value = "";
@@ -213,7 +226,9 @@ export default function ProjectManager({
     const supabase = createSupabaseBrowserClient();
 
     if (!supabase) {
-      setError("Supabase is not configured yet.");
+      const message = "Supabase is not configured yet.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
@@ -235,18 +250,19 @@ export default function ProjectManager({
       setProgressPreviewImages((current) =>
         current.filter((url) => !previewUrls.includes(url)),
       );
-      setMessage(
-        `${uploadedUrls.length} progress image${uploadedUrls.length > 1 ? "s" : ""} uploaded successfully.`,
-      );
+      const successMessage = `${uploadedUrls.length} progress image${uploadedUrls.length > 1 ? "s" : ""} uploaded successfully.`;
+      setMessage(successMessage);
+      toast.success(successMessage);
     } catch (uploadError) {
       setProgressPreviewImages((current) =>
         current.filter((url) => !current.includes(url)),
       );
-      setError(
+      const message =
         uploadError instanceof Error
           ? uploadError.message
-          : "Progress image upload failed.",
-      );
+          : "Progress image upload failed.";
+      setError(message);
+      toast.error(message);
     } finally {
       setUploadingImage(false);
       event.target.value = "";
@@ -269,7 +285,9 @@ export default function ProjectManager({
     const supabase = createSupabaseBrowserClient();
 
     if (!supabase) {
-      setError("Supabase is not configured yet.");
+      const message = "Supabase is not configured yet.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
@@ -289,21 +307,26 @@ export default function ProjectManager({
             project.id === editingId ? updatedProject : project,
           ),
         );
-        setMessage("Project updated successfully.");
+        const successMessage = "Project updated successfully.";
+        setMessage(successMessage);
+        toast.success(successMessage);
       } else {
         const createdProject = await createProject(supabase, formValues);
         setProjects((current) => [createdProject, ...current]);
-        setMessage("Project created successfully.");
+        const successMessage = "Project created successfully.";
+        setMessage(successMessage);
+        toast.success(successMessage);
       }
 
       resetForm();
       router.refresh();
     } catch (submitError) {
-      setError(
+      const message =
         submitError instanceof Error
           ? submitError.message
-          : "Failed to save project.",
-      );
+          : "Failed to save project.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -324,6 +347,7 @@ export default function ProjectManager({
           <button
             type="button"
             onClick={resetForm}
+            disabled={view === "list"}
             className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#F69F11] hover:text-gray-950"
           >
             New Project
@@ -346,374 +370,397 @@ export default function ProjectManager({
         )}
       </section>
 
-      <section
-        id="project-form"
-        className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
-      >
-        <h2 className="text-2xl font-bold text-gray-900">
-          {editingId ? "Edit Project" : "Create Project"}
-        </h2>
-        <form
-          className="mt-6 grid gap-5 md:grid-cols-2"
-          onSubmit={handleSubmit}
+      {view !== "list" ? (
+        <section
+          id="project-form"
+          className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
         >
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Project Name
-            </span>
-            <input
-              required
-              value={formValues.name}
-              onChange={(event) => handleChange("name", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Display Title
-            </span>
-            <input
-              value={formValues.title}
-              onChange={(event) => handleChange("title", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Description
-            </span>
-            <textarea
-              value={formValues.description}
-              onChange={(event) =>
-                handleChange("description", event.target.value)
-              }
-              rows={3}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Location</span>
-            <input
-              required
-              value={formValues.location}
-              onChange={(event) => handleChange("location", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Flat Type</span>
-            <input
-              value={formValues.flatType}
-              onChange={(event) => handleChange("flatType", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Size</span>
-            <input
-              value={formValues.size}
-              onChange={(event) => handleChange("size", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Category</span>
-            <input
-              value={formValues.category}
-              onChange={(event) => handleChange("category", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Variant</span>
-            <input
-              value={formValues.variant}
-              onChange={(event) => handleChange("variant", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Deadline</span>
-            <input
-              type="date"
-              value={formValues.deadline}
-              onChange={(event) => handleChange("deadline", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Main Image (max 50KB)
-            </span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) =>
-                handleSingleImageUpload(event, "mainImageUrl")
-              }
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-            {mainPreviewUrl || formValues.mainImageUrl ? (
-              <div className="overflow-hidden rounded-2xl border border-gray-200">
-                <img
-                  src={mainPreviewUrl || formValues.mainImageUrl}
-                  alt="Main project preview"
-                  className="h-40 w-full object-cover"
-                />
-              </div>
-            ) : null}
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Secondary Image (max 50KB)
-            </span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) =>
-                handleSingleImageUpload(event, "secondaryImageUrl")
-              }
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-            {secondaryPreviewUrl || formValues.secondaryImageUrl ? (
-              <div className="overflow-hidden rounded-2xl border border-gray-200">
-                <img
-                  src={secondaryPreviewUrl || formValues.secondaryImageUrl}
-                  alt="Secondary project preview"
-                  className="h-40 w-full object-cover"
-                />
-              </div>
-            ) : null}
-          </label>
-
-          <div className="space-y-3 md:col-span-2">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-sm font-medium text-gray-700">
-                Progress Images
-              </span>
-              <button
-                type="button"
-                onClick={() => progressInputRef.current?.click()}
-                className="rounded-full border border-[#F69F11] px-3 py-2 text-sm font-semibold text-[#F69F11]"
-              >
-                + Add Images
-              </button>
-            </div>
-            <input
-              ref={progressInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              className="hidden"
-              onChange={handleProgressImageUpload}
-            />
-            {uploadingImage ? (
-              <p className="text-sm text-gray-500">Uploading image...</p>
-            ) : null}
-            {progressPreviewImages.length > 0 ||
-            formValues.progressImages.length > 0 ? (
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {[...progressPreviewImages, ...formValues.progressImages].map(
-                  (imageUrl) => (
-                    <div
-                      key={imageUrl}
-                      className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50"
-                    >
-                      <img
-                        src={imageUrl}
-                        alt="Project progress preview"
-                        className="h-32 w-full object-cover"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeProgressImage(imageUrl)}
-                        className="w-full px-3 py-2 text-sm font-semibold text-red-600"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  ),
-                )}
-              </div>
-            ) : (
-              <p className="rounded-2xl border border-dashed border-gray-300 px-4 py-4 text-sm text-gray-500">
-                Add progress images to showcase the construction journey.
-              </p>
-            )}
-          </div>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Detailed Title
-            </span>
-            <input
-              value={formValues.detailedTitle}
-              onChange={(event) =>
-                handleChange("detailedTitle", event.target.value)
-              }
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Detailed Description
-            </span>
-            <textarea
-              value={formValues.detailedDescription}
-              onChange={(event) =>
-                handleChange("detailedDescription", event.target.value)
-              }
-              rows={3}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Other Apartment Details (one per line, format: Title|Description)
-            </span>
-            <textarea
-              value={formValues.otherApartmentDetails}
-              onChange={(event) =>
-                handleChange("otherApartmentDetails", event.target.value)
-              }
-              rows={4}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Amenities (one per line)
-            </span>
-            <textarea
-              value={formValues.amenities}
-              onChange={(event) =>
-                handleChange("amenities", event.target.value)
-              }
-              rows={4}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Nearby Places (one per line)
-            </span>
-            <textarea
-              value={formValues.nearby}
-              onChange={(event) => handleChange("nearby", event.target.value)}
-              rows={4}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Starts From
-            </span>
-            <input
-              value={formValues.startsFrom}
-              onChange={(event) =>
-                handleChange("startsFrom", event.target.value)
-              }
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
-
-          <div className="md:col-span-2 flex gap-3">
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-xl bg-[#F69F11] px-5 py-3 font-semibold text-gray-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading
-                ? "Saving..."
-                : editingId
-                  ? "Update Project"
-                  : "Create Project"}
-            </button>
-            {editingId && (
-              <button
-                type="button"
-                onClick={resetForm}
-                className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]"
-              >
-                Cancel Edit
-              </button>
-            )}
-          </div>
-        </form>
-      </section>
-
-      <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
-        <div className="flex items-center justify-between gap-3">
           <h2 className="text-2xl font-bold text-gray-900">
-            Existing Projects
+            {editingId ? "Edit Project" : "Create Project"}
           </h2>
-          <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
-            {sortedProjects.length} projects
-          </span>
-        </div>
+          <form
+            className="mt-6 grid gap-5 md:grid-cols-2"
+            onSubmit={handleSubmit}
+          >
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Project Name
+              </span>
+              <input
+                required
+                value={formValues.name}
+                onChange={(event) => handleChange("name", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-        <div className="mt-6 overflow-x-auto">
-          <table className="min-w-full border-separate border-spacing-y-3">
-            <thead>
-              <tr className="text-left text-sm uppercase tracking-[0.2em] text-gray-500">
-                <th className="px-4 py-2">Name</th>
-                <th className="px-4 py-2">Location</th>
-                <th className="px-4 py-2">Category</th>
-                <th className="px-4 py-2">Variant</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedProjects.map((project) => (
-                <tr
-                  key={project.id}
-                  className="rounded-2xl bg-gray-50 text-sm text-gray-700"
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Display Title
+              </span>
+              <input
+                value={formValues.title}
+                onChange={(event) => handleChange("title", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Description
+              </span>
+              <textarea
+                value={formValues.description}
+                onChange={(event) =>
+                  handleChange("description", event.target.value)
+                }
+                rows={3}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Location
+              </span>
+              <input
+                required
+                value={formValues.location}
+                onChange={(event) =>
+                  handleChange("location", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Flat Type
+              </span>
+              <input
+                value={formValues.flatType}
+                onChange={(event) =>
+                  handleChange("flatType", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">Size</span>
+              <input
+                value={formValues.size}
+                onChange={(event) => handleChange("size", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Category
+              </span>
+              <input
+                value={formValues.category}
+                onChange={(event) =>
+                  handleChange("category", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">Variant</span>
+              <input
+                value={formValues.variant}
+                onChange={(event) =>
+                  handleChange("variant", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Deadline
+              </span>
+              <input
+                type="date"
+                value={formValues.deadline}
+                onChange={(event) =>
+                  handleChange("deadline", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Main Image (max 50KB)
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) =>
+                  handleSingleImageUpload(event, "mainImageUrl")
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+              {mainPreviewUrl || formValues.mainImageUrl ? (
+                <div className="overflow-hidden rounded-2xl border border-gray-200">
+                  <img
+                    src={mainPreviewUrl || formValues.mainImageUrl}
+                    alt="Main project preview"
+                    className="h-40 w-full object-cover"
+                  />
+                </div>
+              ) : null}
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Secondary Image (max 50KB)
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) =>
+                  handleSingleImageUpload(event, "secondaryImageUrl")
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+              {secondaryPreviewUrl || formValues.secondaryImageUrl ? (
+                <div className="overflow-hidden rounded-2xl border border-gray-200">
+                  <img
+                    src={secondaryPreviewUrl || formValues.secondaryImageUrl}
+                    alt="Secondary project preview"
+                    className="h-40 w-full object-cover"
+                  />
+                </div>
+              ) : null}
+            </label>
+
+            <div className="space-y-3 md:col-span-2">
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-sm font-medium text-gray-700">
+                  Progress Images
+                </span>
+                <button
+                  type="button"
+                  onClick={() => progressInputRef.current?.click()}
+                  className="rounded-full border border-[#F69F11] px-3 py-2 text-sm font-semibold text-[#F69F11]"
                 >
-                  <td className="px-4 py-4 font-semibold text-gray-900">
-                    {project.name}
-                  </td>
-                  <td className="px-4 py-4">{project.location}</td>
-                  <td className="px-4 py-4">{project.category}</td>
-                  <td className="px-4 py-4">{project.variant}</td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleEdit(project)}
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold transition hover:border-[#F69F11]"
+                  + Add Images
+                </button>
+              </div>
+              <input
+                ref={progressInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                className="hidden"
+                onChange={handleProgressImageUpload}
+              />
+              {uploadingImage ? (
+                <p className="text-sm text-gray-500">Uploading image...</p>
+              ) : null}
+              {progressPreviewImages.length > 0 ||
+              formValues.progressImages.length > 0 ? (
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {[...progressPreviewImages, ...formValues.progressImages].map(
+                    (imageUrl) => (
+                      <div
+                        key={imageUrl}
+                        className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50"
                       >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(project.id)}
-                        className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
+                        <img
+                          src={imageUrl}
+                          alt="Project progress preview"
+                          className="h-32 w-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeProgressImage(imageUrl)}
+                          className="w-full px-3 py-2 text-sm font-semibold text-red-600"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ),
+                  )}
+                </div>
+              ) : (
+                <p className="rounded-2xl border border-dashed border-gray-300 px-4 py-4 text-sm text-gray-500">
+                  Add progress images to showcase the construction journey.
+                </p>
+              )}
+            </div>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Detailed Title
+              </span>
+              <input
+                value={formValues.detailedTitle}
+                onChange={(event) =>
+                  handleChange("detailedTitle", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Detailed Description
+              </span>
+              <textarea
+                value={formValues.detailedDescription}
+                onChange={(event) =>
+                  handleChange("detailedDescription", event.target.value)
+                }
+                rows={3}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Other Apartment Details (one per line, format:
+                Title|Description)
+              </span>
+              <textarea
+                value={formValues.otherApartmentDetails}
+                onChange={(event) =>
+                  handleChange("otherApartmentDetails", event.target.value)
+                }
+                rows={4}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Amenities (one per line)
+              </span>
+              <textarea
+                value={formValues.amenities}
+                onChange={(event) =>
+                  handleChange("amenities", event.target.value)
+                }
+                rows={4}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Nearby Places (one per line)
+              </span>
+              <textarea
+                value={formValues.nearby}
+                onChange={(event) => handleChange("nearby", event.target.value)}
+                rows={4}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Starts From
+              </span>
+              <input
+                value={formValues.startsFrom}
+                onChange={(event) =>
+                  handleChange("startsFrom", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <div className="md:col-span-2 flex gap-3">
+              <button
+                type="submit"
+                disabled={loading}
+                className="rounded-xl bg-[#F69F11] px-5 py-3 font-semibold text-gray-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading
+                  ? "Saving..."
+                  : editingId
+                    ? "Update Project"
+                    : "Create Project"}
+              </button>
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]"
+                >
+                  Cancel Edit
+                </button>
+              )}
+            </div>
+          </form>
+        </section>
+      ) : null}
+
+      {view !== "form" ? (
+        <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Existing Projects
+            </h2>
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
+              {sortedProjects.length} projects
+            </span>
+          </div>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="min-w-full border-separate border-spacing-y-3">
+              <thead>
+                <tr className="text-left text-sm uppercase tracking-[0.2em] text-gray-500">
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Location</th>
+                  <th className="px-4 py-2">Category</th>
+                  <th className="px-4 py-2">Variant</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {sortedProjects.map((project) => (
+                  <tr
+                    key={project.id}
+                    className="rounded-2xl bg-gray-50 text-sm text-gray-700"
+                  >
+                    <td className="px-4 py-4 font-semibold text-gray-900">
+                      {project.name}
+                    </td>
+                    <td className="px-4 py-4">{project.location}</td>
+                    <td className="px-4 py-4">{project.category}</td>
+                    <td className="px-4 py-4">{project.variant}</td>
+                    <td className="px-4 py-4">
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(project)}
+                          className="rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold transition hover:border-[#F69F11]"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(project.id)}
+                          className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

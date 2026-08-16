@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import type { BlogFormValues, BlogRecord } from "@/types";
 import { buildBlogFormValues } from "@/lib/blog";
 import { createSupabaseBrowserClient } from "@/lib/supabase";
@@ -9,11 +10,15 @@ import { createBlog, deleteBlog, updateBlog } from "@/services/blog.service";
 
 interface BlogManagerProps {
   initialBlogs: BlogRecord[];
+  view?: "all" | "form" | "list";
 }
 
 const emptyFormValues: BlogFormValues = buildBlogFormValues();
 
-export default function BlogManager({ initialBlogs }: BlogManagerProps) {
+export default function BlogManager({
+  initialBlogs,
+  view = "all",
+}: BlogManagerProps) {
   const router = useRouter();
   const [blogs, setBlogs] = useState(initialBlogs);
   const [formValues, setFormValues] = useState<BlogFormValues>(emptyFormValues);
@@ -54,7 +59,9 @@ export default function BlogManager({ initialBlogs }: BlogManagerProps) {
     const supabase = createSupabaseBrowserClient();
 
     if (!supabase) {
-      setError("Supabase credentials are not configured yet.");
+      const message = "Supabase credentials are not configured yet.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
@@ -63,14 +70,17 @@ export default function BlogManager({ initialBlogs }: BlogManagerProps) {
       setError(null);
       await deleteBlog(supabase, id);
       setBlogs((current) => current.filter((blog) => blog.id !== id));
-      setMessage("Blog deleted successfully.");
+      const successMessage = "Blog deleted successfully.";
+      setMessage(successMessage);
+      toast.success(successMessage);
       router.refresh();
     } catch (deleteError) {
-      setError(
+      const message =
         deleteError instanceof Error
           ? deleteError.message
-          : "Failed to delete blog.",
-      );
+          : "Failed to delete blog.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -81,7 +91,9 @@ export default function BlogManager({ initialBlogs }: BlogManagerProps) {
     const supabase = createSupabaseBrowserClient();
 
     if (!supabase) {
-      setError("Supabase credentials are not configured yet.");
+      const message = "Supabase credentials are not configured yet.";
+      setError(message);
+      toast.error(message);
       return;
     }
 
@@ -94,21 +106,26 @@ export default function BlogManager({ initialBlogs }: BlogManagerProps) {
         setBlogs((current) =>
           current.map((blog) => (blog.id === editingId ? updatedBlog : blog)),
         );
-        setMessage("Blog updated successfully.");
+        const successMessage = "Blog updated successfully.";
+        setMessage(successMessage);
+        toast.success(successMessage);
       } else {
         const createdBlog = await createBlog(supabase, formValues);
         setBlogs((current) => [createdBlog, ...current]);
-        setMessage("Blog created successfully.");
+        const successMessage = "Blog created successfully.";
+        setMessage(successMessage);
+        toast.success(successMessage);
       }
 
       resetForm();
       router.refresh();
     } catch (submitError) {
-      setError(
+      const message =
         submitError instanceof Error
           ? submitError.message
-          : "Failed to save blog.",
-      );
+          : "Failed to save blog.";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -129,6 +146,7 @@ export default function BlogManager({ initialBlogs }: BlogManagerProps) {
           <button
             type="button"
             onClick={resetForm}
+            disabled={view === "list"}
             className="rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-[#F69F11] hover:text-gray-950"
           >
             New Blog
@@ -151,216 +169,228 @@ export default function BlogManager({ initialBlogs }: BlogManagerProps) {
         )}
       </section>
 
-      <section
-        id="blog-form"
-        className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
-      >
-        <h2 className="text-2xl font-bold text-gray-900">
-          {editingId ? "Edit Blog" : "Create Blog"}
-        </h2>
-        <form
-          className="mt-6 grid gap-5 md:grid-cols-2"
-          onSubmit={handleSubmit}
+      {view !== "list" ? (
+        <section
+          id="blog-form"
+          className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8"
         >
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Title</span>
-            <input
-              required
-              value={formValues.title}
-              onChange={(event) => handleChange("title", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+          <h2 className="text-2xl font-bold text-gray-900">
+            {editingId ? "Edit Blog" : "Create Blog"}
+          </h2>
+          <form
+            className="mt-6 grid gap-5 md:grid-cols-2"
+            onSubmit={handleSubmit}
+          >
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">Title</span>
+              <input
+                required
+                value={formValues.title}
+                onChange={(event) => handleChange("title", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Slug</span>
-            <input
-              value={formValues.slug}
-              onChange={(event) => handleChange("slug", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">Slug</span>
+              <input
+                value={formValues.slug}
+                onChange={(event) => handleChange("slug", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">
-              Featured Image URL
-            </span>
-            <input
-              value={formValues.coverImage}
-              onChange={(event) =>
-                handleChange("coverImage", event.target.value)
-              }
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Featured Image URL
+              </span>
+              <input
+                value={formValues.coverImage}
+                onChange={(event) =>
+                  handleChange("coverImage", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">
-              Short Description
-            </span>
-            <textarea
-              value={formValues.summary}
-              onChange={(event) => handleChange("summary", event.target.value)}
-              rows={3}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Short Description
+              </span>
+              <textarea
+                value={formValues.summary}
+                onChange={(event) =>
+                  handleChange("summary", event.target.value)
+                }
+                rows={3}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2 md:col-span-2">
-            <span className="text-sm font-medium text-gray-700">Content</span>
-            <textarea
-              required
-              value={formValues.content}
-              onChange={(event) => handleChange("content", event.target.value)}
-              rows={8}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">Content</span>
+              <textarea
+                required
+                value={formValues.content}
+                onChange={(event) =>
+                  handleChange("content", event.target.value)
+                }
+                rows={8}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Author</span>
-            <input
-              value={formValues.author}
-              onChange={(event) => handleChange("author", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">Author</span>
+              <input
+                value={formValues.author}
+                onChange={(event) => handleChange("author", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Category</span>
-            <input
-              value={formValues.category}
-              onChange={(event) => handleChange("category", event.target.value)}
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Category
+              </span>
+              <input
+                value={formValues.category}
+                onChange={(event) =>
+                  handleChange("category", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Tags</span>
-            <input
-              value={formValues.tags}
-              onChange={(event) => handleChange("tags", event.target.value)}
-              placeholder="homes, chennai, luxury"
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">Tags</span>
+              <input
+                value={formValues.tags}
+                onChange={(event) => handleChange("tags", event.target.value)}
+                placeholder="homes, chennai, luxury"
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">
-              Published Date
-            </span>
-            <input
-              type="date"
-              value={formValues.publishedDate}
-              onChange={(event) =>
-                handleChange("publishedDate", event.target.value)
-              }
-              className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-            />
-          </label>
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Published Date
+              </span>
+              <input
+                type="date"
+                value={formValues.publishedDate}
+                onChange={(event) =>
+                  handleChange("publishedDate", event.target.value)
+                }
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
 
-          <label className="flex items-center gap-3 rounded-xl border border-gray-300 px-4 py-3 md:col-span-2">
-            <input
-              type="checkbox"
-              checked={formValues.isPublished}
-              onChange={(event) =>
-                handleChange("isPublished", event.target.checked)
-              }
-              className="h-4 w-4 rounded border-gray-300"
-            />
-            <span className="text-sm font-medium text-gray-700">
-              Publish Status
-            </span>
-          </label>
+            <label className="flex items-center gap-3 rounded-xl border border-gray-300 px-4 py-3 md:col-span-2">
+              <input
+                type="checkbox"
+                checked={formValues.isPublished}
+                onChange={(event) =>
+                  handleChange("isPublished", event.target.checked)
+                }
+                className="h-4 w-4 rounded border-gray-300"
+              />
+              <span className="text-sm font-medium text-gray-700">
+                Publish Status
+              </span>
+            </label>
 
-          <div className="md:col-span-2 flex gap-3">
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-xl bg-[#F69F11] px-5 py-3 font-semibold text-gray-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading
-                ? "Saving..."
-                : editingId
-                  ? "Update Blog"
-                  : "Create Blog"}
-            </button>
-            {editingId && (
+            <div className="md:col-span-2 flex gap-3">
               <button
-                type="button"
-                onClick={resetForm}
-                className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]"
+                type="submit"
+                disabled={loading}
+                className="rounded-xl bg-[#F69F11] px-5 py-3 font-semibold text-gray-900 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Cancel Edit
+                {loading
+                  ? "Saving..."
+                  : editingId
+                    ? "Update Blog"
+                    : "Create Blog"}
               </button>
-            )}
-          </div>
-        </form>
-      </section>
-
-      <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-2xl font-bold text-gray-900">Existing Blogs</h2>
-          <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
-            {sortedBlogs.length} posts
-          </span>
-        </div>
-
-        <div className="mt-6 overflow-x-auto">
-          <table className="min-w-full border-separate border-spacing-y-3">
-            <thead>
-              <tr className="text-left text-sm uppercase tracking-[0.2em] text-gray-500">
-                <th className="px-4 py-2">Title</th>
-                <th className="px-4 py-2">Author</th>
-                <th className="px-4 py-2">Status</th>
-                <th className="px-4 py-2">Published</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sortedBlogs.map((blog) => (
-                <tr
-                  key={blog.id}
-                  className="rounded-2xl bg-gray-50 text-sm text-gray-700"
+              {editingId && (
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]"
                 >
-                  <td className="px-4 py-4 font-semibold text-gray-900">
-                    {blog.title}
-                  </td>
-                  <td className="px-4 py-4">{blog.author ?? "—"}</td>
-                  <td className="px-4 py-4">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold ${blog.is_published ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}
-                    >
-                      {blog.is_published ? "Published" : "Draft"}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4">
-                    {blog.publishedDate ?? blog.created_at.slice(0, 10)}
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleEdit(blog)}
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold transition hover:border-[#F69F11]"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDelete(blog.id)}
-                        className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
+                  Cancel Edit
+                </button>
+              )}
+            </div>
+          </form>
+        </section>
+      ) : null}
+
+      {view !== "form" ? (
+        <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-2xl font-bold text-gray-900">Existing Blogs</h2>
+            <span className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600">
+              {sortedBlogs.length} posts
+            </span>
+          </div>
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="min-w-full border-separate border-spacing-y-3">
+              <thead>
+                <tr className="text-left text-sm uppercase tracking-[0.2em] text-gray-500">
+                  <th className="px-4 py-2">Title</th>
+                  <th className="px-4 py-2">Author</th>
+                  <th className="px-4 py-2">Status</th>
+                  <th className="px-4 py-2">Published</th>
+                  <th className="px-4 py-2">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+              </thead>
+              <tbody>
+                {sortedBlogs.map((blog) => (
+                  <tr
+                    key={blog.id}
+                    className="rounded-2xl bg-gray-50 text-sm text-gray-700"
+                  >
+                    <td className="px-4 py-4 font-semibold text-gray-900">
+                      {blog.title}
+                    </td>
+                    <td className="px-4 py-4">{blog.author ?? "—"}</td>
+                    <td className="px-4 py-4">
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${blog.is_published ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}`}
+                      >
+                        {blog.is_published ? "Published" : "Draft"}
+                      </span>
+                    </td>
+                    <td className="px-4 py-4">
+                      {blog.publishedDate ?? blog.created_at.slice(0, 10)}
+                    </td>
+                    <td className="px-4 py-4">
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(blog)}
+                          className="rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold transition hover:border-[#F69F11]"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(blog.id)}
+                          className="rounded-lg border border-red-200 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-50"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }
