@@ -78,7 +78,9 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
             <p className="text-sm uppercase tracking-[0.25em] text-[#F69F11] font-semibold">
               Enquiry Form
             </p>
-            <h2 className="mt-2 text-2xl font-bold text-gray-900">Send us your details</h2>
+            <h2 className="mt-2 text-2xl font-bold text-gray-900">
+              Send us your details
+            </h2>
           </div>
           <button
             type="button"
@@ -103,7 +105,9 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
               />
             </label>
             <label className="space-y-2">
-              <span className="text-sm font-medium text-gray-700">Mobile Number</span>
+              <span className="text-sm font-medium text-gray-700">
+                Mobile Number
+              </span>
               <input
                 required
                 value={mobile}
@@ -116,7 +120,9 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
           </div>
 
           <label className="space-y-2">
-            <span className="text-sm font-medium text-gray-700">Email Address</span>
+            <span className="text-sm font-medium text-gray-700">
+              Email Address
+            </span>
             <input
               required
               value={email}
