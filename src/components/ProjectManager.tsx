@@ -608,13 +608,18 @@ export default function ProjectManager({
               <span className="text-sm font-medium text-gray-700">
                 Category
               </span>
-              <input
+              <select
                 value={formValues.category}
                 onChange={(event) =>
                   handleChange("category", event.target.value)
                 }
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
-              />
+              >
+                <option value="">Select category</option>
+                <option value="Ongoing Projects">Ongoing Projects</option>
+                <option value="Upgoing Projects">Upgoing Projects</option>
+                <option value="Completed Projects">Completed Projects</option>
+              </select>
             </label>
 
             <label className="space-y-2">
