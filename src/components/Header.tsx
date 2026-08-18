@@ -79,6 +79,7 @@ export default function Header({ variant = "public" }: HeaderProps) {
                 width={100}
                 height={50}
                 className="h-auto w-auto"
+                style={{ maxWidth: "75%", height: "auto" }}
                 priority
               />
             </Link>
@@ -144,7 +145,10 @@ export default function Header({ variant = "public" }: HeaderProps) {
         onClose={() => setIsMobileMenuOpen(false)}
       />
 
-      <EnquiryModal isOpen={isEnquiryOpen} onClose={() => setIsEnquiryOpen(false)} />
+      <EnquiryModal
+        isOpen={isEnquiryOpen}
+        onClose={() => setIsEnquiryOpen(false)}
+      />
     </>
   );
 }

@@ -108,6 +108,25 @@ export async function getBlogById(client: SupabaseClient, id: number) {
   return mapBlogRow(data as BlogRow);
 }
 
+export async function getPublishedBlogById(client: SupabaseClient, id: number) {
+  const { data, error } = await client
+    .from("blog")
+    .select("*")
+    .eq("id", id)
+    .eq("is_published", true)
+    .single();
+
+  if (error) {
+    if (error.code === "PGRST116") {
+      return null;
+    }
+
+    throw new Error(error.message);
+  }
+
+  return mapBlogRow(data as BlogRow);
+}
+
 export async function createBlog(
   client: SupabaseClient,
   values: BlogFormValues,
