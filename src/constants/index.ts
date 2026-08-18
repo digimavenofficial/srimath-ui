@@ -32,10 +32,10 @@ export const NAV_LINKS: NavLink[] = [
 
 // Statistics
 export const STATISTICS: StatItem[] = [
-  { value: "100+", label: "Completed Projects" },
-  { value: "60L+", label: "Sq. Ft. Area" },
-  { value: "600+", label: "Happy Families" },
-  { value: "10+", label: "Ongoing Projects" },
+  { value: "50+", label: "Completed Projects" },
+  { value: "10L+", label: "Sq. Ft. Area" },
+  { value: "50+", label: "Happy Families" },
+  { value: "5+", label: "Ongoing Projects" },
 ];
 
 // Features / Why Choose Us

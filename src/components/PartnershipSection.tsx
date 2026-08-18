@@ -7,21 +7,26 @@ export default function PartnershipSection() {
         {/* Heading */}
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-5xl lg:text-4xl font-bold leading-tight mb-4">
-            MORE THAN CONSTRUCTION,
+            Aesthetic craftsmanship is the fusion of skill and artistry, where
+            every creation is a
             <br />
             <span className="text-white bg-[#F69F11] px-4 py-2 rounded-full inline-block mt-4">
-              IT IS A PARTNERSHIP.
+              Masterpiece.
             </span>
           </h2>
         </div>
 
         {/* Description */}
         <p className="text-center text-lg text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-          We believe that building isn't just about bricks and mortar. It's
-          about understanding your dreams, honoring your trust, and creating
-          spaces where memories are made. Every project is a collaboration where
-          your vision becomes our mission. We're not just builders—we're your
-          partners in creating a better tomorrow.
+          We hold the steadfast belief that each project undertaken by us is a
+          pivotal representation of our Name and Craftsmanship. Therefore, we
+          invest our unwavering dedication and fullest effort across all facets
+          of Construction, encompassing Design, Architecture, Planning,
+          Procurement, Marketing, and the meticulous execution of the Project.
+          At the core of our commitment is a holistic approach that ensures the
+          highest standards from inception to completion, reflecting not only
+          our proficiency but also our dedication to delivering excellence in
+          every endeavour
         </p>
 
         {/* CTA Button */}
@@ -38,21 +43,39 @@ export default function PartnershipSection() {
         {/* Values Grid */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-xl font-bold text-[#F69F11] mb-3">
-              Our Commitment
-            </h3>
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3">Vision</h3>
             <p className="text-gray-600">
-              Delivering excellence through quality craftsmanship, transparent
-              processes, and unwavering dedication to customer satisfaction.
+              Constructing new global standards through profit-centred yet
+              customer-driven excellence in Construction. Our vision integrates
+              profitability seamlessly with unparalleled customer satisfaction,
+              leading the way in our industries
+            </p>
+          </div>
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3">Mission</h3>
+            <p className="text-gray-600">
+              To deliver innovative, sustainable, and high-quality solutions in
+              Construction, Real Estate, and Interior Design, tailored to meet
+              the diverse needs of our clients. Through collaboration,
+              integrity, and a relentless focus on customer satisfaction, we
+              strive to create spaces that inspire, enrich, and endure
             </p>
           </div>
           <div className="p-6 bg-gray-50 rounded-lg">
             <h3 className="text-xl font-bold text-[#F69F11] mb-3">
-              Your Trust
+              Our Core Values
             </h3>
             <p className="text-gray-600">
-              Built on a foundation of integrity, reliability, and proven track
-              record spanning over a decade in the real estate industry.
+              Empowering sustainable living through visionary design and
+              uncompromising quality, we aspire to redefine the landscape of our
+              nation. Our goal at Srimath Builder, is to pioneer a new era of
+              environmentally conscious development, creating vibrant
+              communities that thrive in harmony with nature. With
+              state-of-the-art design and precision engineering, we endeavor to
+              deliver not just buildings, but legacies that endure for
+              generations. Committed to enhancing the lives of our people and
+              enriching the fabric of our society, we are dedicated to shaping a
+              future where sustainability is not just a goal, but a way of life
             </p>
           </div>
         </div>

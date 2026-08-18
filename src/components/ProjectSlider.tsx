@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { PROJECTS } from "@/constants";
 import type { Project } from "@/types";
 import ProjectCard from "./ProjectCard";
 
@@ -9,7 +8,7 @@ interface ProjectSliderProps {
   projects?: Project[];
 }
 
-export default function ProjectSlider({ projects = PROJECTS }: ProjectSliderProps) {
+export default function ProjectSlider({ projects = [] }: ProjectSliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [projectsPerView, setProjectsPerView] = useState(2);
 
@@ -25,23 +24,34 @@ export default function ProjectSlider({ projects = PROJECTS }: ProjectSliderProp
 
   const nextSlide = () => {
     setCurrentIndex((prev) => {
-      const maxIndex = Math.ceil(PROJECTS.length / projectsPerView) - 1;
+      const maxIndex = Math.ceil(projects.length / projectsPerView) - 1;
       return prev < maxIndex ? prev + 1 : 0;
     });
   };
 
   const prevSlide = () => {
     setCurrentIndex((prev) => {
-      const maxIndex = Math.ceil(PROJECTS.length / projectsPerView) - 1;
+      const maxIndex = Math.ceil(projects.length / projectsPerView) - 1;
       return prev > 0 ? prev - 1 : maxIndex;
     });
   };
 
-  const visibleProjects = PROJECTS.slice(
+  const visibleProjects = projects.slice(
     currentIndex,
     currentIndex + projectsPerView,
   );
-  const totalSlides = Math.ceil(PROJECTS.length / projectsPerView);
+  const totalSlides = Math.max(1, Math.ceil(projects.length / projectsPerView));
+  const hasProjects = projects.length > 0;
+
+  useEffect(() => {
+    const maxIndex = Math.max(
+      0,
+      Math.ceil(projects.length / projectsPerView) - 1,
+    );
+    if (currentIndex > maxIndex) {
+      setCurrentIndex(0);
+    }
+  }, [currentIndex, projects.length, projectsPerView]);
 
   return (
     <section id="projects" className="py-16 sm:py-24 lg:py-32 bg-gray-50">
@@ -60,9 +70,15 @@ export default function ProjectSlider({ projects = PROJECTS }: ProjectSliderProp
         {/* Slider Container */}
         <div className="mb-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {visibleProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
+            {hasProjects ? (
+              visibleProjects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))
+            ) : (
+              <p className="col-span-full rounded-2xl border border-gray-200 bg-white p-8 text-center text-gray-500">
+                Projects will be displayed here once they are available.
+              </p>
+            )}
           </div>
         </div>
 
@@ -71,6 +87,7 @@ export default function ProjectSlider({ projects = PROJECTS }: ProjectSliderProp
           {/* Previous Button */}
           <button
             onClick={prevSlide}
+            disabled={!hasProjects}
             className="p-3 rounded-full border-2 border-[#F69F11] text-[#F69F11] hover:bg-[#F69F11] hover:text-white transition-all"
             aria-label="Previous projects"
           >
@@ -112,6 +129,7 @@ export default function ProjectSlider({ projects = PROJECTS }: ProjectSliderProp
           {/* Next Button */}
           <button
             onClick={nextSlide}
+            disabled={!hasProjects}
             className="p-3 rounded-full border-2 border-[#F69F11] text-[#F69F11] hover:bg-[#F69F11] hover:text-white transition-all"
             aria-label="Next projects"
           >
