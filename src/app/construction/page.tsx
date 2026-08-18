@@ -195,7 +195,10 @@ const constructionPackages: ConstructionPackage[] = [
 export default function ConstructionPage() {
   return (
     <SiteShell>
-      <section className="bg-[linear-gradient(180deg,#fff8ea_0%,#ffffff_35%)] px-4 py-16 sm:py-20 lg:py-24">
+      <section
+        className="bg-[linear-gradient(180deg,#fff8ea_0%,#ffffff_35%)] px-4 py-16 sm:py-20 lg:py-24"
+        style={{ marginTop: "70px" }}
+      >
         <div className="mx-auto max-w-7xl">
           <div className="rounded-[2.25rem] border border-amber-100 bg-white p-8 shadow-[0_28px_70px_rgba(191,120,8,0.12)] sm:p-12">
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#C27A00]">
