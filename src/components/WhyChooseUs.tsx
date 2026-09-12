@@ -9,7 +9,7 @@ export default function WhyChooseUs() {
         {/* Heading */}
         <div className="text-center mb-16">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-            Why Choose SRIMATH Builders?
+            Why Choose SRIMATH Builder?
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto text-lg">
             We combine decades of experience with modern innovation to deliver

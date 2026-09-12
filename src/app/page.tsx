@@ -3,13 +3,9 @@ import {
   Header,
   Hero,
   PartnershipSection,
-  StatsSection,
-  VideoShowcase,
   ProjectsIntroSection,
   ProjectSlider,
-  WhyChooseUs,
   Testimonials,
-  CTASection,
   Footer,
   WhatsAppButton,
   ScrollToTop,
@@ -32,26 +28,14 @@ export default async function Home() {
       {/* Partnership Section */}
       <PartnershipSection />
 
-      {/* Statistics Section */}
-      <StatsSection />
-
-      {/* Video Showcase */}
-      <VideoShowcase />
-
       {/* Projects Introduction */}
       <ProjectsIntroSection />
 
       {/* Projects Slider */}
       <ProjectSlider projects={projects} />
 
-      {/* Why Choose Us */}
-      <WhyChooseUs />
-
       {/* Testimonials */}
       <Testimonials />
-
-      {/* Call to Action */}
-      <CTASection />
 
       {/* Footer */}
       <Footer />

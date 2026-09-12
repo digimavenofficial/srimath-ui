@@ -51,7 +51,7 @@ export default function Testimonials() {
             What Our Customers Say
           </h2>
           <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-            Real stories from our satisfied clients who chose SRIMATH Builders
+            Real stories from our satisfied clients who chose SRIMATH Builder
             for their dream homes.
           </p>
         </div>

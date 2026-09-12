@@ -37,7 +37,7 @@ export default function Hero() {
 
         {/* Subheading */}
         <p className="text-lg sm:text-xl text-gray-100 mb-8 max-w-2xl mx-auto leading-relaxed mb-10">
-          At SRIMATH Builders, we're committed to delivering premium residential
+          At SRIMATH Builder, we're committed to delivering premium residential
           and commercial spaces that redefine modern living in Chennai.
         </p>
 

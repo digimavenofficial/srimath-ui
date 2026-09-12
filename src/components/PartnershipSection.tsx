@@ -41,42 +41,86 @@ export default function PartnershipSection() {
         </div>
 
         {/* Values Grid */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="mt-16 grid grid-cols-1 gap-8">
           <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-xl font-bold text-[#F69F11] mb-3">Vision</h3>
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3 uppercase">Our Vision</h3>
             <p className="text-gray-600">
-              Constructing new global standards through profit-centred yet
-              customer-driven excellence in Construction. Our vision integrates
-              profitability seamlessly with unparalleled customer satisfaction,
-              leading the way in our industries
+              To build quality spaces with trust, responsibility and craftsmanship—creating homes, communities and developments that deliver lasting value for generations.
             </p>
           </div>
           <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-xl font-bold text-[#F69F11] mb-3">Mission</h3>
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3 uppercase">Our Mission</h3>
             <p className="text-gray-600">
-              To deliver innovative, sustainable, and high-quality solutions in
-              Construction, Real Estate, and Interior Design, tailored to meet
-              the diverse needs of our clients. Through collaboration,
-              integrity, and a relentless focus on customer satisfaction, we
-              strive to create spaces that inspire, enrich, and endure
+              To combine our strong construction experience, skilled manpower and proven building practices with modern technology and thoughtful design to deliver high-quality spaces on time and with complete transparency. We are committed to creating lasting value for our customers, landowners and investors through responsible construction, quality workmanship and a customer-first approach.
             </p>
           </div>
           <div className="p-6 bg-gray-50 rounded-lg">
-            <h3 className="text-xl font-bold text-[#F69F11] mb-3">
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3 uppercase">
               Our Core Values
             </h3>
-            <p className="text-gray-600">
-              Empowering sustainable living through visionary design and
-              uncompromising quality, we aspire to redefine the landscape of our
-              nation. Our goal at Srimath Builder, is to pioneer a new era of
-              environmentally conscious development, creating vibrant
-              communities that thrive in harmony with nature. With
-              state-of-the-art design and precision engineering, we endeavor to
-              deliver not just buildings, but legacies that endure for
-              generations. Committed to enhancing the lives of our people and
-              enriching the fabric of our society, we are dedicated to shaping a
-              future where sustainability is not just a goal, but a way of life
-            </p>
+            <div className="space-y-4 text-gray-600">
+              <div>
+                <p className="font-semibold text-gray-900">QUALITY WITHOUT COMPROMISE</p>
+                <p>We believe quality is built into every stage of construction—from the materials we select to the workmanship and finishing we deliver.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">TRUST & TRANSPARENCY</p>
+                <p>We believe strong relationships are built on honesty, clear communication and transparent commitments.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">TIME IS VALUE</p>
+                <p>We respect our customers' time, money and plans. We strive to execute our projects efficiently and deliver within the committed timeline.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">RESPONSIBILITY</p>
+                <p>We take responsibility for every project and every asset entrusted to us—whether it belongs to a customer, landowner or investor.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">CUSTOMER FIRST</p>
+                <p>We understand our customers' needs and make decisions with their long-term comfort, satisfaction and value in mind.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">CRAFTSMANSHIP</p>
+                <p>We take pride in the skill, precision and attention to detail that go into every space we build.</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-6 bg-gray-50 rounded-lg">
+            <h3 className="text-xl font-bold text-[#F69F11] mb-3 uppercase">Our Strengths</h3>
+            <div className="space-y-4 text-gray-600">
+              <div>
+                <p className="font-semibold text-gray-900">STRONG CONSTRUCTION EXPERIENCE</p>
+                <p>Our foundation is built on extensive practical experience in the construction industry, giving us a strong understanding of construction from planning to final handover.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">OUR PEOPLE, OUR STRENGTH</p>
+                <p>Our skilled and dedicated manpower is one of Srimath Builder's greatest strengths. We believe quality construction begins with the people who build it.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">TRADITIONAL QUALITY</p>
+                <p>We continue to value proven construction practices, including red-brick construction and river-sand plastering, where they contribute to durability and quality.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">MODERN THINKING</p>
+                <p>We combine traditional construction knowledge with modern design, technology, engineering and smart-living solutions to meet today's expectations.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">SUPERIOR WORKMANSHIP & FINISHING</p>
+                <p>We give special attention to workmanship, detailing and finishing because we believe the quality of a building is visible in the details.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">TRANSPARENT EXECUTION</p>
+                <p>We maintain clear and transparent communication on project progress, payment schedules, commitments and important decisions.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">ON-TIME EXECUTION</p>
+                <p>We understand that construction delays affect people's finances and plans. Strong planning, coordination and execution help us stay focused on timely delivery.</p>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900">BUILT FOR LONG-TERM VALUE</p>
+                <p>We don't build only for today. We create spaces that are designed to provide comfort, durability and value for years to come.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default async function BlogPage() {
               Insights, updates, and project stories.
             </h1>
             <p className="mt-4 text-lg text-gray-600">
-              Read the latest posts from SRIMATH Builders without logging in.
+              Read the latest posts from SRIMATH Builder without logging in.
             </p>
           </div>
 
@@ -63,7 +63,7 @@ export default async function BlogPage() {
                       <p className="text-sm text-gray-500">
                         {blog.author
                           ? `By ${blog.author}`
-                          : "By SRIMATH Builders"}
+                          : "By SRIMATH Builder"}
                       </p>
                       <p className="text-gray-600">
                         {blog.summary ?? blog.content.slice(0, 160)}

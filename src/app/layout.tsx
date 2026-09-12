@@ -43,7 +43,7 @@ const acuminPro = localFont({
 
 export const metadata: Metadata = {
   title:
-    "Premium Builders in Chennai | SRIMATH Builders - Luxury Homes & Commercial Spaces",
+    "Premium Builders in Chennai | SRIMATH Builder - Luxury Homes & Commercial Spaces",
   description:
     "Discover premium residential and commercial projects from one of Chennai's trusted builders, delivering quality homes with design excellence, transparency and commitment to customer satisfaction.",
   keywords: [
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     "real estate Chennai",
   ],
   openGraph: {
-    title: "Premium Builders in Chennai | SRIMATH Builders",
+    title: "Premium Builders in Chennai | SRIMATH Builder",
     description:
       "Luxury residential and commercial projects in Chennai. 100+ completed projects, 600+ happy families.",
     type: "website",
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
         url: "https://images.unsplash.com/photo-1604813614405-92fc801d440d?w=1200&h=630&fit=crop",
         width: 1200,
         height: 630,
-        alt: "SRIMATH Builders - Premium Construction",
+        alt: "SRIMATH Builder - Premium Construction",
       },
     ],
   },

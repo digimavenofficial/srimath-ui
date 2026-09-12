@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { BRAND_NAME } from "@/constants";
 import MobileMenu from "./MobileMenu";
 import EnquiryModal from "./EnquiryModal";
@@ -19,6 +19,15 @@ export default function Header({ variant = "public" }: HeaderProps) {
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  const shouldUseWhiteBuilderLogo = isHomePage && !isScrolled;
+  const logoSrc = shouldUseWhiteBuilderLogo
+    ? "/images/srimath-logo-white-builder.png"
+    : "/images/srimath-logo.png";
+  const logoAlt = shouldUseWhiteBuilderLogo
+    ? "srimath-logo-white-builder"
+    : "srimath-logo";
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 50);
@@ -74,8 +83,8 @@ export default function Header({ variant = "public" }: HeaderProps) {
               }`}
             >
               <Image
-                src="/images/srimath-logo.png"
-                alt="srimath-logo"
+                src={logoSrc}
+                alt={logoAlt}
                 width={100}
                 height={50}
                 className="h-auto w-auto"
