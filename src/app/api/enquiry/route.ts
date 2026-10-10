@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     body: JSON.stringify({
       from: RESEND_FROM,
       to: [RESEND_TO],
-      subject: "New enquiry from SRIMATH Builders website",
+      subject: "New enquiry from SRIMATH Builder website",
       text: mailBody,
       reply_to: email,
     }),

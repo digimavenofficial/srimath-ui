@@ -13,52 +13,7 @@ export default function ProjectsIntroSection() {
               <span className="text-[#F69F11]">REFLECTED IN EVERY PROJECT</span>
             </h2>
 
-            <p className="text-lg text-gray-200 mb-8 leading-relaxed">
-              Every project we undertake is a testament to our unwavering
-              commitment to excellence, precision, and customer satisfaction. We
-              don't just build structures; we create landmarks that define
-              communities and enrich lives.
-            </p>
-
-            <div className="space-y-4">
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#F69F11] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-white font-bold">✓</span>
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">
-                    Premium Quality Materials
-                  </h3>
-                  <p className="text-gray-300">
-                    Sourced from industry-leading suppliers
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#F69F11] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-white font-bold">✓</span>
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">Timely Delivery</h3>
-                  <p className="text-gray-300">
-                    We respect your timeline and deliver on schedule
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="w-8 h-8 bg-[#F69F11] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                  <span className="text-white font-bold">✓</span>
-                </div>
-                <div>
-                  <h3 className="font-bold text-lg mb-1">Modern Design</h3>
-                  <p className="text-gray-300">
-                    Blending aesthetics with functionality
-                  </p>
-                </div>
-              </div>
-            </div>
+          
 
             <a
               href="#projects"
@@ -85,18 +40,26 @@ export default function ProjectsIntroSection() {
         </div>
 
         {/* Additional Text */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-gray-700 pt-12">
-          <div className="text-center">
-            <h3 className="text-[#F69F11] text-4xl font-bold mb-2">20+</h3>
-            <p className="text-gray-300">Years of Experience</p>
+        <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 border-t border-gray-700 pt-12">
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm">
+            <p className="text-[#F69F11] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Core Experience</p>
+            <h3 className="text-3xl sm:text-4xl font-bold text-white">25+</h3>
+            <p className="mt-2 text-sm text-gray-300">Years</p>
           </div>
-          <div className="text-center">
-            <h3 className="text-[#F69F11] text-4xl font-bold mb-2">500+</h3>
-            <p className="text-gray-300">Satisfied Customers</p>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm">
+            <p className="text-[#F69F11] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Constructed Homes</p>
+            <h3 className="text-3xl sm:text-4xl font-bold text-white">369+</h3>
+            <p className="mt-2 text-sm text-gray-300">Homes</p>
           </div>
-          <div className="text-center">
-            <h3 className="text-[#F69F11] text-4xl font-bold mb-2">100%</h3>
-            <p className="text-gray-300">Commitment to Quality</p>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm">
+            <p className="text-[#F69F11] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Sq.Ft</p>
+            <h3 className="text-3xl sm:text-4xl font-bold text-white">3.6L</h3>
+            <p className="mt-2 text-sm text-gray-300">Sq.Ft</p>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-sm">
+            <p className="text-[#F69F11] text-xs font-semibold uppercase tracking-[0.2em] mb-3">Labours Strength</p>
+            <h3 className="text-3xl sm:text-4xl font-bold text-white">450+</h3>
+            <p className="mt-2 text-sm text-gray-300">Labours</p>
           </div>
         </div>
       </div>

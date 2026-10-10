@@ -60,7 +60,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               </h1>
 
               <p className="text-sm text-gray-500">
-                {blog.author ? `By ${blog.author}` : "By SRIMATH Builders"}
+                {blog.author ? `By ${blog.author}` : "By SRIMATH Builder"}
               </p>
 
               {blog.summary ? (

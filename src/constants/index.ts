@@ -5,7 +5,7 @@
 import type { Project, Testimonial, StatItem, Feature, NavLink } from "@/types";
 
 // Brand Configuration
-export const BRAND_NAME = "SRIMATH BUILDERS";
+export const BRAND_NAME = "SRIMATH BUILDER";
 export const WHATSAPP_NUMBER = "+91-80150-50994";
 export const COMPANY_EMAIL = "hello@srimathbuilders.com";
 export const COMPANY_PHONE = "+91 801 505 0994";
@@ -126,7 +126,7 @@ export const TESTIMONIALS: Testimonial[] = [
     projectName: "SRIMATH GRANDEUR",
     rating: 5,
     testimonial:
-      "Exceptional quality and professionalism. SRIMATH Builders exceeded our expectations in every aspect. Our new home is a dream come true!",
+      "Exceptional quality and professionalism. SRIMATH Builder exceeded our expectations in every aspect. Our new home is a dream come true!",
     designation: "IT Professional",
   },
   {
