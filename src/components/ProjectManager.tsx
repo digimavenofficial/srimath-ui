@@ -665,9 +665,7 @@ export default function ProjectManager({
             </label>
 
             <label className="space-y-2">
-              <span className="text-sm font-medium text-gray-700">
-                Price
-              </span>
+              <span className="text-sm font-medium text-gray-700">Price</span>
               <input
                 type="number"
                 min="0"
@@ -686,7 +684,9 @@ export default function ProjectManager({
               <input
                 type="url"
                 value={formValues.mapLink}
-                onChange={(event) => handleChange("mapLink", event.target.value)}
+                onChange={(event) =>
+                  handleChange("mapLink", event.target.value)
+                }
                 placeholder="https://maps.google.com/..."
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
@@ -702,7 +702,9 @@ export default function ProjectManager({
                   handleChange("supportDocuments", event.target.value)
                 }
                 rows={4}
-                placeholder={"Brochure.pdf|https://example.com/brochure.pdf\nAgreement.docx|https://example.com/agreement.docx"}
+                placeholder={
+                  "Brochure.pdf|https://example.com/brochure.pdf\nAgreement.docx|https://example.com/agreement.docx"
+                }
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
               <p className="text-xs text-gray-500">

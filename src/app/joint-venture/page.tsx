@@ -144,6 +144,21 @@ const galleryItems = [
   },
 ];
 
+const storyboardImages = Array.from({ length: 8 }, (_, index) => ({
+  step: index + 1,
+  src: `/images/story-board/${index + 1}.png`,
+}));
+
+const reviewVideos = [
+  { title: "A clearer path for your land", caption: "JV owner review 01" },
+  {
+    title: "Transparent from discussion to handover",
+    caption: "JV owner review 02",
+  },
+  { title: "A partnership built on trust", caption: "JV owner review 03" },
+  { title: "Creating more value together", caption: "JV owner review 04" },
+];
+
 const faqs = [
   {
     question: "What is a Joint Venture in real estate?",
@@ -280,6 +295,43 @@ export default function JointVenturePage() {
           </div>
         </section>
 
+        <section className="bg-white py-12 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F69F11]">
+                The JV story
+              </p>
+              <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
+                See how a Joint Venture creates more value.
+              </h2>
+              <p className="mt-4 text-base leading-8 text-gray-600">
+                Follow the journey in eight simple steps, from the first land
+                decision to a developed asset and long-term opportunity.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {storyboardImages.map((image) => (
+                <figure
+                  key={image.step}
+                  className="group overflow-hidden rounded-[1.5rem] border border-gray-200 bg-[#faf9f5] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
+                  <div className="aspect-video overflow-hidden bg-white p-2">
+                    <img
+                      src={image.src}
+                      alt={`Joint Venture storyboard step ${image.step}`}
+                      className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                  <figcaption className="border-t border-gray-200 px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.2em] text-[#B77700]">
+                    Step {String(image.step).padStart(2, "0")}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <div>
@@ -371,44 +423,46 @@ export default function JointVenturePage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="rounded-[2rem] bg-[#f2f6ff] p-7 sm:p-10">
-            <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F69F11]">
-                  What do we take care of?
-                </p>
-                <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-                  Once the JV is finalized, our team handles the development
-                  process.
-                </h2>
-                <p className="mt-5 text-base leading-8 text-gray-700">
-                  Our objective is to keep the process simple, transparent and
-                  comfortable for the landowner.
-                </p>
-              </div>
+        <section className="bg-[#171717] py-16 text-white sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="rounded-[2rem] border border-white/10 bg-[#222222] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.2)] sm:p-10">
+              <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+                <div>
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F69F11]">
+                    What do we take care of?
+                  </p>
+                  <h2 className="mt-4 text-3xl font-bold text-white sm:text-4xl">
+                    Once the JV is finalized, our team handles the development
+                    process.
+                  </h2>
+                  <p className="mt-5 text-base leading-8 text-gray-300">
+                    Our objective is to keep the process simple, transparent and
+                    comfortable for the landowner.
+                  </p>
+                </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                {[
-                  "Project planning & feasibility",
-                  "Architectural design",
-                  "Structural design",
-                  "Statutory approvals",
-                  "Construction & site execution",
-                  "Materials & labour",
-                  "Quality control",
-                  "Project coordination",
-                  "Common area development",
-                  "Marketing & sale of builder's share",
-                  "Project completion & handover",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="rounded-2xl border border-[#dfe8ff] bg-white p-4 text-sm font-medium text-gray-700 shadow-sm"
-                  >
-                    {item}
-                  </div>
-                ))}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {[
+                    "Project planning & feasibility",
+                    "Architectural design",
+                    "Structural design",
+                    "Statutory approvals",
+                    "Construction & site execution",
+                    "Materials & labour",
+                    "Quality control",
+                    "Project coordination",
+                    "Common area development",
+                    "Marketing & sale of builder's share",
+                    "Project completion & handover",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-white/10 bg-[#2d2d2d] p-4 text-sm font-medium text-gray-200 shadow-sm transition hover:border-[#F69F11]/60 hover:bg-[#333333]"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -444,38 +498,112 @@ export default function JointVenturePage() {
           </div>
         </section>
 
-        <section
-          id="process"
-          className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
-        >
-          <div className="mb-10 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F69F11]">
-              Our joint venture process
-            </p>
-            <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
-              From land evaluation to handover.
-            </h2>
-          </div>
+        <section id="process" className="bg-[#f4f1eb] py-16 sm:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-10 text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#F69F11]">
+                Our joint venture process
+              </p>
+              <h2 className="mt-4 text-3xl font-bold text-gray-900 sm:text-4xl">
+                From land evaluation to handover.
+              </h2>
+            </div>
 
-          <div className="space-y-5">
-            {processSteps.map((item) => (
-              <div
-                key={item.step}
-                className="grid gap-4 rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm md:grid-cols-[90px_1fr] md:p-6"
-              >
-                <div className="flex items-center justify-center rounded-2xl bg-[#fef2d5] p-4 text-xl font-black text-[#a36400]">
-                  {item.step}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900">
-                    {item.title}
-                  </h3>
-                  <p className="mt-2 text-base leading-7 text-gray-600">
-                    {item.text}
-                  </p>
-                </div>
+            <div className="mx-auto max-w-5xl">
+              <div className="space-y-5 md:hidden">
+                {processSteps.map((item, index) => (
+                  <div key={item.step}>
+                    <div className="rounded-[1.5rem] border border-gray-200 bg-white p-5 shadow-sm">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fef2d5] text-lg font-black text-[#a36400]">
+                          {item.step}
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-900">
+                            {item.title}
+                          </h3>
+                          <p className="mt-2 text-sm leading-7 text-gray-600">
+                            {item.text}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    {index < processSteps.length - 1 ? (
+                      <div className="py-2 text-center text-2xl text-[#b77700]">
+                        ↓
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="hidden space-y-4 md:block">
+                {Array.from({ length: Math.ceil(processSteps.length / 2) }).map(
+                  (_, rowIndex) => {
+                    const firstIndex = rowIndex * 2;
+                    const secondIndex = firstIndex + 1;
+                    const firstItem = processSteps[firstIndex];
+                    const secondItem = processSteps[secondIndex];
+                    const isForwardRow = rowIndex % 2 === 0;
+                    const renderCard = (
+                      item: (typeof processSteps)[number],
+                    ) => (
+                      <div className="rounded-[1.5rem] border border-gray-200 bg-white p-6 shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md">
+                        <div className="flex items-start gap-4">
+                          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[#fef2d5] text-lg font-black text-[#a36400]">
+                            {item.step}
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-semibold text-gray-900">
+                              {item.title}
+                            </h3>
+                            <p className="mt-2 text-sm leading-7 text-gray-600">
+                              {item.text}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+
+                    return (
+                      <div key={firstItem.step}>
+                        <div className="grid grid-cols-[1fr_72px_1fr] items-center gap-4">
+                          {isForwardRow ? (
+                            renderCard(firstItem)
+                          ) : secondItem ? (
+                            renderCard(secondItem)
+                          ) : (
+                            <div />
+                          )}
+                          <span className="text-center text-4xl font-light leading-none text-[#b77700]">
+                            {secondItem ? (isForwardRow ? "→" : "←") : ""}
+                          </span>
+                          {secondItem ? (
+                            isForwardRow ? (
+                              renderCard(secondItem)
+                            ) : (
+                              renderCard(firstItem)
+                            )
+                          ) : (
+                            <div />
+                          )}
+                        </div>
+                        {secondItem && firstIndex + 2 < processSteps.length ? (
+                          <div
+                            className={`flex py-2 text-3xl text-[#b77700] ${isForwardRow ? "justify-end pr-[22%]" : "justify-start pl-[22%]"}`}
+                          >
+                            ↓
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  },
+                )}
+              </div>
+              <div className="mt-8 text-center text-sm font-semibold uppercase tracking-[0.2em] text-[#8c650d]">
+                One clear process. One responsible development partner.
+              </div>
+            </div>
           </div>
         </section>
 
@@ -607,59 +735,58 @@ export default function JointVenturePage() {
               </h2>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-              <div className="overflow-hidden rounded-[2rem] border border-gray-200 bg-white shadow-[0_24px_70px_rgba(0,0,0,0.05)]">
-                <div className="relative aspect-video bg-[#1f1f1f]">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,196,86,0.4),rgba(0,0,0,0.7))]" />
-                  <img
-                    src="https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=1200&q=80"
-                    alt="JV owner testimonial video preview"
-                    className="h-full w-full object-cover opacity-70"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="flex h-20 w-20 items-center justify-center rounded-full border-2 border-white bg-white/10 text-3xl text-white backdrop-blur-sm transition-transform duration-200 hover:scale-105">
-                      ▶
-                    </button>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[#F69F11]">
-                    Client video review
-                  </p>
-                  <h3 className="mt-3 text-2xl font-semibold text-gray-900">
-                    “Professional, clear, and trustworthy.”
-                  </h3>
-                  <p className="mt-3 text-base leading-7 text-gray-600">
-                    A simple overview of how our JV process helped a landowner
-                    unlock the true potential of their property with confidence
-                    and clarity.
-                  </p>
-                </div>
-              </div>
-
-              <div className="space-y-5">
-                {reviewQuotes.map((review) => (
-                  <div
-                    key={review.name}
-                    className="rounded-[1.75rem] border border-gray-200 bg-white p-6 shadow-sm"
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              {reviewVideos.map((review, index) => (
+                <article
+                  key={review.caption}
+                  className="overflow-hidden rounded-[1.5rem] border border-gray-200 bg-white shadow-sm"
+                >
+                  <video
+                    controls
+                    preload="metadata"
+                    poster={`/images/story-board/${index + 1}.png`}
+                    className="aspect-video w-full bg-[#1f1f1f] object-cover"
                   >
-                    <div className="mb-4 flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f5d183] font-bold text-[#4d3300]">
-                        {review.name.split(" ")[1]?.charAt(0) ?? "J"}
-                      </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {review.name}
-                        </p>
-                        <p className="text-sm text-gray-500">{review.role}</p>
-                      </div>
-                    </div>
-                    <p className="text-base leading-8 text-gray-700">
-                      “{review.text}”
+                    <source src="/videos/hero_video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div className="p-5">
+                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#F69F11]">
+                      {review.caption}
+                    </p>
+                    <h3 className="mt-2 text-lg font-semibold text-gray-900">
+                      {review.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-gray-600">
+                      Dummy video slot ready for the landowner testimonial.
                     </p>
                   </div>
-                ))}
-              </div>
+                </article>
+              ))}
+            </div>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              {reviewQuotes.map((review) => (
+                <div
+                  key={review.name}
+                  className="rounded-[1.75rem] border border-gray-200 bg-white p-6 shadow-sm"
+                >
+                  <div className="mb-4 flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f5d183] font-bold text-[#4d3300]">
+                      {review.name.split(" ")[1]?.charAt(0) ?? "J"}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">
+                        {review.name}
+                      </p>
+                      <p className="text-sm text-gray-500">{review.role}</p>
+                    </div>
+                  </div>
+                  <p className="text-base leading-8 text-gray-700">
+                    “{review.text}”
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -775,6 +902,16 @@ export default function JointVenturePage() {
                     <input
                       type="text"
                       placeholder="Area / locality"
+                      className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-[#F69F11] focus:ring-2 focus:ring-[#f8d58a]"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
+                      Google Maps Link
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="Paste the Google Maps link for your property"
                       className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 outline-none transition focus:border-[#F69F11] focus:ring-2 focus:ring-[#f8d58a]"
                     />
                   </div>

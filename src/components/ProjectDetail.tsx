@@ -16,7 +16,10 @@ function renderList(items?: string[] | null) {
   return (
     <ul className="mt-4 space-y-3">
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+        <li
+          key={item}
+          className="flex items-start gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700"
+        >
           <span className="mt-1 text-[#F69F11]">•</span>
           <span>{item}</span>
         </li>
@@ -48,7 +51,8 @@ function normalizeDocument(document: SupportDocument | string, index: number) {
   }
 
   return {
-    name: document.name ?? document.file_name ?? `Support document ${index + 1}`,
+    name:
+      document.name ?? document.file_name ?? `Support document ${index + 1}`,
     url: document.url ?? document.file_url ?? "",
   };
 }
@@ -67,8 +71,12 @@ function documentType(name: string) {
 }
 
 export default function ProjectDetail({ project }: ProjectDetailProps) {
-  const detailTitle = project.detailed_title || project.name || "Project Details";
-  const detailDescription = project.detailed_description || project.description || "More details coming soon.";
+  const detailTitle =
+    project.detailed_title || project.name || "Project Details";
+  const detailDescription =
+    project.detailed_description ||
+    project.description ||
+    "More details coming soon.";
   const otherApartmentDetails = project.other_apartment_details ?? [];
   const amenities = project.amenities ?? [];
   const nearby = project.nearby ?? [];
@@ -94,12 +102,16 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
                 className="h-full w-full object-cover"
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-gray-500">No image available</div>
+              <div className="flex h-full items-center justify-center text-gray-500">
+                No image available
+              </div>
             )}
           </div>
 
           <div className="flex flex-col justify-center p-6 sm:p-8 lg:p-10">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#F69F11] font-semibold">Project Overview</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-[#F69F11] font-semibold">
+              Project Overview
+            </p>
             <h1 className="mt-3 text-3xl font-bold text-gray-900 sm:text-4xl">
               {project.title ?? project.name}
             </h1>
@@ -134,7 +146,9 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm text-gray-500">Flat Type</p>
-                <p className="mt-1 font-semibold text-gray-900">{project.flat_type ?? "Details coming soon"}</p>
+                <p className="mt-1 font-semibold text-gray-900">
+                  {project.flat_type ?? "Details coming soon"}
+                </p>
               </div>
               <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm text-gray-500">Apartment Size</p>
@@ -144,7 +158,9 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               </div>
               <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm text-gray-500">Deadline</p>
-                <p className="mt-1 font-semibold text-gray-900">{project.deadline ?? "To be announced"}</p>
+                <p className="mt-1 font-semibold text-gray-900">
+                  {project.deadline ?? "To be announced"}
+                </p>
               </div>
             </div>
 
@@ -159,7 +175,10 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               >
                 Enquire Now
               </a>
-              <Link href="/projects" className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]">
+              <Link
+                href="/projects"
+                className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]"
+              >
                 Back to Projects
               </Link>
               {project.map_link ? (
@@ -186,9 +205,16 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           {otherApartmentDetails.length > 0 && (
             <div className="mt-8 grid gap-4">
               {otherApartmentDetails.map((detail, index) => (
-                <div key={`${detail.title}-${index}`} className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-                  <h3 className="font-semibold text-gray-900">{detail.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600">{detail.description}</p>
+                <div
+                  key={`${detail.title}-${index}`}
+                  className="rounded-2xl border border-gray-200 bg-gray-50 p-4"
+                >
+                  <h3 className="font-semibold text-gray-900">
+                    {detail.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">
+                    {detail.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -198,7 +224,11 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
         <div className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
           {project.secondary_image_url ? (
             <div className="relative h-64 overflow-hidden rounded-2xl bg-gray-100">
-              <img src={project.secondary_image_url} alt={`${project.title ?? project.name} overview`} className="h-full w-full object-cover" />
+              <img
+                src={project.secondary_image_url}
+                alt={`${project.title ?? project.name} overview`}
+                className="h-full w-full object-cover"
+              />
             </div>
           ) : null}
 
@@ -208,7 +238,9 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
           </div>
 
           <div className="mt-8">
-            <h3 className="text-xl font-semibold text-gray-900">Nearby Places</h3>
+            <h3 className="text-xl font-semibold text-gray-900">
+              Nearby Places
+            </h3>
             {renderList(nearby)}
           </div>
         </div>
@@ -216,12 +248,23 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
 
       {progressImages.length > 0 ? (
         <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
-          <p className="text-sm uppercase tracking-[0.3em] text-[#F69F11] font-semibold">Progress Gallery</p>
-          <h2 className="mt-2 text-2xl font-bold text-gray-900">Each Frame Shows your home in progress</h2>
+          <p className="text-sm uppercase tracking-[0.3em] text-[#F69F11] font-semibold">
+            Progress Gallery
+          </p>
+          <h2 className="mt-2 text-2xl font-bold text-gray-900">
+            Each Frame Shows your home in progress
+          </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {progressImages.map((imageUrl, index) => (
-              <div key={`${imageUrl}-${index}`} className="overflow-hidden rounded-[1.5rem] border border-gray-200 bg-gray-50 shadow-sm">
-                <img src={imageUrl} alt={`Progress image ${index + 1}`} className="h-44 w-full object-cover" />
+              <div
+                key={`${imageUrl}-${index}`}
+                className="overflow-hidden rounded-[1.5rem] border border-gray-200 bg-gray-50 shadow-sm"
+              >
+                <img
+                  src={imageUrl}
+                  alt={`Progress image ${index + 1}`}
+                  className="h-44 w-full object-cover"
+                />
               </div>
             ))}
           </div>
