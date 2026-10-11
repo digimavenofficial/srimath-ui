@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { Project } from "@/types";
+import type { Project, SupportDocument } from "@/types";
 import CountdownTimer from "./CountdownTimer";
 
 interface ProjectDetailProps {
@@ -25,6 +25,47 @@ function renderList(items?: string[] | null) {
   );
 }
 
+function formatPrice(price?: number | string) {
+  if (price === undefined || price === null || price === "") {
+    return "Price on request";
+  }
+
+  const numericPrice = Number(price);
+  if (!Number.isFinite(numericPrice)) {
+    return String(price);
+  }
+
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(numericPrice);
+}
+
+function normalizeDocument(document: SupportDocument | string, index: number) {
+  if (typeof document === "string") {
+    return { name: `Support document ${index + 1}`, url: document };
+  }
+
+  return {
+    name: document.name ?? document.file_name ?? `Support document ${index + 1}`,
+    url: document.url ?? document.file_url ?? "",
+  };
+}
+
+function documentType(name: string) {
+  const lowerName = name.toLowerCase();
+  if (lowerName.endsWith(".docx")) {
+    return "DOCX";
+  }
+
+  if (lowerName.endsWith(".pdf")) {
+    return "PDF";
+  }
+
+  return "FILE";
+}
+
 export default function ProjectDetail({ project }: ProjectDetailProps) {
   const detailTitle = project.detailed_title || project.name || "Project Details";
   const detailDescription = project.detailed_description || project.description || "More details coming soon.";
@@ -32,6 +73,14 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
   const amenities = project.amenities ?? [];
   const nearby = project.nearby ?? [];
   const progressImages = project.progress_images ?? [];
+  const supportDocuments = project.support_documents ?? [];
+  const normalizedDocuments = supportDocuments
+    .map(normalizeDocument)
+    .filter((document) => document.url);
+  const normalizedStatus = project.status?.toLowerCase();
+  const isSoldOut = normalizedStatus === "sold out";
+  const isAvailable = normalizedStatus === "available";
+  const statusLabel = project.status || "Status unavailable";
 
   return (
     <div className="space-y-10">
@@ -56,10 +105,42 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
             </h1>
             <p className="mt-4 text-gray-600">{project.description}</p>
 
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <span
+                className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold ${
+                  isSoldOut
+                    ? "bg-gray-200 text-gray-600"
+                    : isAvailable
+                      ? "bg-emerald-100 text-emerald-700"
+                      : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                <span
+                  className={`h-2.5 w-2.5 rounded-full ${
+                    isSoldOut
+                      ? "bg-red-500"
+                      : isAvailable
+                        ? "bg-emerald-500"
+                        : "bg-gray-400"
+                  }`}
+                />
+                {statusLabel}
+              </span>
+              <span className="text-2xl font-bold text-gray-900">
+                {formatPrice(project.price)}
+              </span>
+            </div>
+
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm text-gray-500">Flat Type</p>
                 <p className="mt-1 font-semibold text-gray-900">{project.flat_type ?? "Details coming soon"}</p>
+              </div>
+              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                <p className="text-sm text-gray-500">Apartment Size</p>
+                <p className="mt-1 font-semibold text-gray-900">
+                  {project.size ?? "Details coming soon"}
+                </p>
               </div>
               <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <p className="text-sm text-gray-500">Deadline</p>
@@ -81,6 +162,17 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               <Link href="/projects" className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-700 transition hover:border-[#F69F11]">
                 Back to Projects
               </Link>
+              {project.map_link ? (
+                <a
+                  href={project.map_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#b9d4ff] bg-[#eff6ff] px-5 py-3 font-semibold text-[#1857a6] transition hover:bg-[#dbeafe]"
+                >
+                  <span aria-hidden="true">📍</span>
+                  View on Google Maps
+                </a>
+              ) : null}
             </div>
           </div>
         </div>
@@ -131,6 +223,44 @@ export default function ProjectDetail({ project }: ProjectDetailProps) {
               <div key={`${imageUrl}-${index}`} className="overflow-hidden rounded-[1.5rem] border border-gray-200 bg-gray-50 shadow-sm">
                 <img src={imageUrl} alt={`Progress image ${index + 1}`} className="h-44 w-full object-cover" />
               </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {normalizedDocuments.length > 0 ? (
+        <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#F69F11]">
+            Support Documents
+          </p>
+          <h2 className="mt-2 text-2xl font-bold text-gray-900">
+            Project information and downloads
+          </h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {normalizedDocuments.map((document) => (
+              <a
+                key={document.url}
+                href={document.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="flex items-center gap-3 rounded-2xl border border-gray-200 bg-gray-50 p-4 transition hover:border-[#F69F11] hover:bg-[#fffaf0]"
+              >
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#fef2d5] text-xs font-black text-[#a36400]">
+                  {documentType(document.name)}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-semibold text-gray-900">
+                    {document.name}
+                  </span>
+                  <span className="mt-1 block text-sm text-gray-500">
+                    Download document
+                  </span>
+                </span>
+                <span className="text-lg text-[#F69F11]" aria-hidden="true">
+                  ↓
+                </span>
+              </a>
             ))}
           </div>
         </section>

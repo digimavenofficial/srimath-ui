@@ -7,6 +7,14 @@ export interface ProjectDetailItem {
   description: string;
 }
 
+export interface SupportDocument {
+  name?: string;
+  file_name?: string;
+  url?: string;
+  file_url?: string;
+  type?: string;
+}
+
 export interface Project {
   id: number;
   name?: string;
@@ -32,6 +40,9 @@ export interface Project {
   nearby?: string[];
   created_at?: string;
   updated_at?: string;
+  price?: number | string;
+  map_link?: string;
+  support_documents?: Array<SupportDocument | string>;
 }
 
 export interface ProjectFormValues {

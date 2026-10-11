@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Project, ProjectFormValues } from "@/types";
+import type { Project, ProjectFormValues, SupportDocument } from "@/types";
 
 type ProjectRow = {
   id: number;
@@ -27,6 +27,10 @@ type ProjectRow = {
   nearby?: string[] | null;
   created_at?: string;
   updated_at?: string;
+  status?: string;
+  price?: number | string | null;
+  map_link?: string | null;
+  support_documents?: Array<SupportDocument | string> | null;
 };
 
 function sanitizeImageValue(value?: string) {
@@ -106,6 +110,10 @@ function mapProjectRow(row: ProjectRow): Project {
     nearby: row.nearby ?? [],
     created_at: row.created_at,
     updated_at: row.updated_at,
+    status: row.status,
+    price: row.price ?? undefined,
+    map_link: row.map_link ?? undefined,
+    support_documents: row.support_documents ?? [],
   };
 }
 
