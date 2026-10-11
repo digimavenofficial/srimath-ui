@@ -667,12 +667,10 @@ export default function ProjectManager({
             <label className="space-y-2">
               <span className="text-sm font-medium text-gray-700">Price</span>
               <input
-                type="number"
-                min="0"
-                step="1"
+                type="text"
                 value={formValues.price}
                 onChange={(event) => handleChange("price", event.target.value)}
-                placeholder="e.g. 7500000"
+                placeholder="e.g. ₹75 Lakhs or Price on request"
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
             </label>

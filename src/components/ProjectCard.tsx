@@ -12,15 +12,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const normalizedStatus = project.status?.toLowerCase();
   const isSoldOut = normalizedStatus === "sold out";
   const isAvailable = normalizedStatus === "available";
-  const numericPrice = Number(project.price);
-  const formattedPrice =
-    Number.isFinite(numericPrice) && project.price !== undefined
-      ? new Intl.NumberFormat("en-IN", {
-          style: "currency",
-          currency: "INR",
-          maximumFractionDigits: 0,
-        }).format(numericPrice)
-      : null;
+  const formattedPrice = project.price?.trim() || null;
 
   return (
     <Link

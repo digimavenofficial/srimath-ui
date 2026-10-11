@@ -40,7 +40,7 @@ export interface Project {
   nearby?: string[];
   created_at?: string;
   updated_at?: string;
-  price?: number | string;
+  price?: string;
   map_link?: string;
   support_documents?: Array<SupportDocument | string>;
 }

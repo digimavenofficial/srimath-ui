@@ -28,21 +28,12 @@ function renderList(items?: string[] | null) {
   );
 }
 
-function formatPrice(price?: number | string) {
+function formatPrice(price?: string) {
   if (price === undefined || price === null || price === "") {
     return "Price on request";
   }
 
-  const numericPrice = Number(price);
-  if (!Number.isFinite(numericPrice)) {
-    return String(price);
-  }
-
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(numericPrice);
+  return price;
 }
 
 function normalizeDocument(document: SupportDocument | string, index: number) {

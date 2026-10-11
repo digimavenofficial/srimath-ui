@@ -28,7 +28,7 @@ type ProjectRow = {
   created_at?: string;
   updated_at?: string;
   status?: string;
-  price?: number | string | null;
+  price?: string | null;
   map_link?: string | null;
   support_documents?: Array<SupportDocument | string> | null;
 };
@@ -184,7 +184,7 @@ export async function createProject(
       deadline: values.deadline,
       starts_from: values.startsFrom,
       status: values.status || null,
-      price: values.price ? Number(values.price) : null,
+      price: values.price || null,
       map_link: values.mapLink || null,
       support_documents: parseSupportDocuments(values.supportDocuments),
       description: values.description,
@@ -239,7 +239,7 @@ export async function updateProject(
       deadline: values.deadline,
       starts_from: values.startsFrom,
       status: values.status || null,
-      price: values.price ? Number(values.price) : null,
+      price: values.price || null,
       map_link: values.mapLink || null,
       support_documents: parseSupportDocuments(values.supportDocuments),
       description: values.description,
