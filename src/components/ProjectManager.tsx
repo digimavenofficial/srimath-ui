@@ -28,6 +28,9 @@ const emptyFormValues: ProjectFormValues = {
   image: "",
   startsFrom: "",
   status: "",
+  price: "",
+  mapLink: "",
+  supportDocuments: "",
   description: "",
   flatType: "",
   deadline: "",
@@ -107,6 +110,21 @@ export default function ProjectManager({
       image: project.image ?? "",
       startsFrom: project.starts_from ?? "",
       status: project.status ?? "",
+      price: project.price !== undefined ? String(project.price) : "",
+      mapLink: project.map_link ?? "",
+      supportDocuments:
+        project.support_documents
+          ?.map((document) => {
+            if (typeof document === "string") {
+              return document;
+            }
+
+            const name = document.name ?? document.file_name ?? "Document";
+            const url = document.url ?? document.file_url ?? "";
+            return url ? `${name}|${url}` : "";
+          })
+          .filter(Boolean)
+          .join("\n") ?? "",
       description: project.description ?? "",
       flatType: project.flat_type ?? "",
       deadline: project.deadline ?? "",
@@ -631,6 +649,65 @@ export default function ProjectManager({
                 }
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
               />
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">Status</span>
+              <select
+                value={formValues.status}
+                onChange={(event) => handleChange("status", event.target.value)}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              >
+                <option value="">Select status</option>
+                <option value="Available">Available</option>
+                <option value="Sold Out">Sold Out</option>
+              </select>
+            </label>
+
+            <label className="space-y-2">
+              <span className="text-sm font-medium text-gray-700">
+                Price
+              </span>
+              <input
+                type="number"
+                min="0"
+                step="1"
+                value={formValues.price}
+                onChange={(event) => handleChange("price", event.target.value)}
+                placeholder="e.g. 7500000"
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Google Maps Link
+              </span>
+              <input
+                type="url"
+                value={formValues.mapLink}
+                onChange={(event) => handleChange("mapLink", event.target.value)}
+                placeholder="https://maps.google.com/..."
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+            </label>
+
+            <label className="space-y-2 md:col-span-2">
+              <span className="text-sm font-medium text-gray-700">
+                Support Documents
+              </span>
+              <textarea
+                value={formValues.supportDocuments}
+                onChange={(event) =>
+                  handleChange("supportDocuments", event.target.value)
+                }
+                rows={4}
+                placeholder={"Brochure.pdf|https://example.com/brochure.pdf\nAgreement.docx|https://example.com/agreement.docx"}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none transition focus:border-[#F69F11]"
+              />
+              <p className="text-xs text-gray-500">
+                Add one document per line using: Document name|Public URL
+              </p>
             </label>
 
             <label className="space-y-2">

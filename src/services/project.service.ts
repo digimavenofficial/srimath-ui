@@ -47,6 +47,22 @@ function sanitizeImageList(values?: string[] | null) {
   );
 }
 
+function parseSupportDocuments(value: string) {
+  return value
+    .split("\n")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry) => {
+      const [name, ...urlParts] = entry.split("|");
+      const url = urlParts.join("|").trim() || name.trim();
+
+      return {
+        name: urlParts.length > 0 ? name.trim() : "Support document",
+        url,
+      };
+    });
+}
+
 export async function removeStorageFileByUrl(
   client: SupabaseClient,
   url?: string | null,
@@ -167,6 +183,10 @@ export async function createProject(
       flat_type: values.flatType,
       deadline: values.deadline,
       starts_from: values.startsFrom,
+      status: values.status || null,
+      price: values.price ? Number(values.price) : null,
+      map_link: values.mapLink || null,
+      support_documents: parseSupportDocuments(values.supportDocuments),
       description: values.description,
       detailed_title: values.detailedTitle,
       detailed_description: values.detailedDescription,
@@ -218,6 +238,10 @@ export async function updateProject(
       flat_type: values.flatType,
       deadline: values.deadline,
       starts_from: values.startsFrom,
+      status: values.status || null,
+      price: values.price ? Number(values.price) : null,
+      map_link: values.mapLink || null,
+      support_documents: parseSupportDocuments(values.supportDocuments),
       description: values.description,
       detailed_title: values.detailedTitle,
       detailed_description: values.detailedDescription,

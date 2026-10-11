@@ -54,6 +54,9 @@ export interface ProjectFormValues {
   image: string;
   startsFrom: string;
   status: string;
+  price: string;
+  mapLink: string;
+  supportDocuments: string;
   title: string;
   description: string;
   flatType: string;
