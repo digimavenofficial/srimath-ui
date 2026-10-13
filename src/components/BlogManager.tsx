@@ -307,7 +307,7 @@ export default function BlogManager({
 
             <label className="space-y-2 md:col-span-2">
               <span className="text-sm font-medium text-gray-700">
-                Featured Image (max 50KB)
+                Featured Image (max 1MB)
               </span>
               <input
                 type="file"

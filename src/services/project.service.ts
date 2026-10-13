@@ -311,11 +311,10 @@ export async function uploadImage(
   file: File,
   projectId: string,
 ) {
-  const MAX_FILE_SIZE_KB = 50;
-  const fileSizeInKB = file.size / 1024;
+  const MAX_FILE_SIZE_BYTES = 1024 * 1024;
 
-  if (fileSizeInKB > MAX_FILE_SIZE_KB) {
-    throw new Error("Image must be 50KB or smaller.");
+  if (file.size > MAX_FILE_SIZE_BYTES) {
+    throw new Error("Image must be 1MB or smaller.");
   }
 
   const fileName = `${projectId}/${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
